@@ -29,18 +29,24 @@ class ArtworksController extends Controller
             'users_id' => 'required',
             'title' => 'required|string|max:255',
             'descripation' => 'required|string|max:255',
-            'image_path' => 'required|file',
+            'image_path' => 'required|image',
         ]);
+        $img = $req->file('image_path');
+        $imageName = time(). $img->getClientOriginalName();
+        $img->move('image_path/',$imageName);
+        $imgpath = "image_path/".$imageName;
 
-        $path = $req->file('image_path')->store('public/images');
+
 
         DB::table('artwork')->insert([
             'users_id' => $validated['users_id'],
             'title' => $validated['title'],
             'descripation' => $validated['descripation'],
-            'image_path' => $path,
-            'created_at' => now(),
+            'image_path' => $imgpath,
+
         ]);
+
+
 
         session()->flash('status', 'Artwork Created');
 
@@ -66,11 +72,10 @@ class ArtworksController extends Controller
             'users_id' => 'required',
             'title' => 'required|string|max:255',
             'descripation' => 'required|string|max:255',
-            'image_path' => 'nullable|file',
+            'image_path' => 'required|image',
             'created_at' => 'required|date',
         ]);
 
-        $path = $req->file('image_path') ? $req->file('image_path')->store('public/images') : null;
 
         $data = [
             'users_id' => $validated['users_id'],
@@ -78,9 +83,12 @@ class ArtworksController extends Controller
             'descripation' => $validated['descripation'],
             'created_at' => $validated['created_at'],
         ];
-
-        if ($path) {
-            $data['image_path'] = $path;
+        $img = $req->file('image_path');
+        $imageName = time(). $img->getClientOriginalName();
+        $img->move('image_path/',$imageName);
+        $imgpath = "image_path/".$imageName;
+        if ($imgpath) {
+            $data['image_path'] =$imgpath;
         }
 
         DB::table('artwork')->where('artwork_id', $id)->update($data);

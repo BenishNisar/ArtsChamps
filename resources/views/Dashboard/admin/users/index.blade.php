@@ -64,7 +64,6 @@
                         <div class="tb_search">
                             <div class="input-group">
                                 <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
-                                <button class="btn btn-success"><a style="text-decoration: none;" href="{{ url('dashboard/admin/users/add') }}" class="text-white">Add User</a></button>
                             </div>
                         </div>
                     </div>
@@ -82,22 +81,24 @@
                     <th>Role Name</th>
                     <th>Status</th>
                     <th>Created_at</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($users as $item)
                 <tr>
-          <td>{{ $item->firstname }}</td>
+                    <td>{{ $item->id }}</td>
+                    <td>{{ $item->firstname }} {{ $item->lastname }}</td>
                     <td>{{ $item->email }}</td>
                     <td>{{ $item->role_name }}</td>
                     <td>{{ $item->status }}</td>
                     <td>{{ $item->created_at }}</td>
                     <td>
-                        <a href="{{ url('/dashboard/admin/users/edit') }}/{{ $item->id }}" class="btn btn-warning">Edit</a>
                         <a href="{{ url('/dashboard/admin/users/delete') }}/{{ $item->id }}" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
                 @endforeach
+
             </tbody>
         </table>
 

@@ -62,26 +62,24 @@
         <thead class="bg-green">
             <tr>
                 <th>#</th>
-                <th>User ID</th>
+                <th>User Name</th>
                 <th>Title</th>
                 <th>Description</th>
-                <th>Image Path</th>
-                <th>Created At</th>
+                <th>Image</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($artworks as $item)
             <tr>
-                <td>{{ $item->artwork_id}}</td>
+                <td>{{ $item->artwork_id }}</td>
                 <td>{{ $item->firstname }}</td>
                 <td>{{ $item->title }}</td>
                 <td>{{ $item->descripation }}</td>
-                <td>{{ $item->image_path }}</td>
-                <td>{{ $item->created_at }}</td>
+                <td><img src="{{ asset($item->image_path) }}" width="50" alt="Artwork Image"></td>
                 <td>
-                    <a href="{{ url('/dashboard/admin/artwork/edit') }}/{{ $item->artwork_id }}" class="btn btn-warning">Edit</a>
-                    <a href="{{ url('/dashboard/admin/artwork/delete') }}/{{ $item->artwork_id }}" class="btn btn-danger">Delete</a>
+                    <a href="{{ url('/dashboard/admin/artwork/edit/' . $item->artwork_id) }}" class="btn btn-warning">Edit</a>
+                    <a href="{{ url('/dashboard/admin/artwork/delete/' . $item->artwork_id) }}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             @endforeach

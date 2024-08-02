@@ -19,190 +19,28 @@
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{asset('dashboard_assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('dashboard_assets/css/table.css')}}">
     <!-- End layout styles -->
-    <link rel="shortcut icon" href="{{asset('dashboard_assets/images/favicon.png')}}" />
+    <link rel="shortcut icon" href="{{asset('dashboard_assets/images/profilelogo.png')}}" />
 
   </head>
   <body>
     <div class="container-scroller">
         <!-- partial:partials/_sidebar.html -->
-        <nav class="sidebar sidebar-offcanvas" id="sidebar">
-          <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-            <a class="sidebar-brand brand-logo" href="index.html"><img src="assets/images/logo.svg" alt="logo" /></a>
-            <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
-          </div>
-          <ul class="nav">
 
-            <li class="nav-item profile">
-              <div class="profile-desc">
-                <div class="profile-pic">
-                  <div class="count-indicator">
-                    <img class="img-xs rounded-circle " src="assets/images/faces/face15.jpg" alt="">
-                    <span class="count bg-success"></span>
-                  </div>
-                  <div class="profile-name">
-                    <h5 class="mb-0 font-weight-normal">Henry Klein</h5>
-                    <span>Gold Member</span>
-                  </div>
-                </div>
-                <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
-                <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list" aria-labelledby="profile-dropdown">
-                  <a href="#" class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i class="mdi mdi-settings text-primary"></i>
-                      </div>
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1 text-small">Account settings</p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i class="mdi mdi-onepassword  text-info"></i>
-                      </div>
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1 text-small">Change Password</p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i class="mdi mdi-calendar-today text-success"></i>
-                      </div>
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1 text-small">To-do list</p>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </li>
-            <li class="nav-item nav-category">
-              <span class="nav-link">Navigation</span>
-            </li>
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{{ url('dashboard/') }}">
-                <span class="menu-icon">
-                  <i class="mdi mdi-speedometer"></i>
-                </span>
-                <span class="menu-title">Dashboard</span>
-              </a>
-            </li>
-            <li class="nav-item nav-category" >
-                <span class="nav-link">Post</span>
+        @if (Auth::user()->role_id == 1)
+        {{-- Admin MENu --}}
 
+        @include('Layout.menus.admin')
 
-              </li>
+        @elseif (Auth::user()->role_id == 2)
 
+        @include('Layout.menus.artist')
 
-              <li class="nav-item menu-items">
-                <a class="nav-link" href="{{ url('/dashboard/admin/post/') }}">
-                  <span class="menu-icon">
-                    <i class="mdi mdi-playlist-play"></i>
-                  </span>
-                  <span class="menu-title">Add Post</span>
-                </a>
-              </li>
-
-            <li class="nav-item menu-items">
-              <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-                <span class="menu-icon">
-                  <i class="mdi mdi-laptop"></i>
+        @endif
 
 
 
-                </span>
-                <span class="menu-title">
-                    User Management
-                </span>
-                <i class="menu-arrow"></i>
-              </a>
-              <div class="collapse" id="ui-basic">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="{{url('/dashboard/admin/users/')}}">Users</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="{{url('/dashboard/admin/role/')}}">Roles</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="{{url('/dashboard/admin/profile')}}">Profile</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="{{url('/dashboard/admin/about/')}}">About</a></li>
-
-                  <li class="nav-item"> <a class="nav-link" href="{{url('/dashboard/admin/userprofile/')}}">Users Profile</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="{{ url('/dashboard/admin/aboutprofile/') }}">About Profile</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="{{ url('/dashboard/admin/notification/')}}">Notification</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="{{ url ('/dashboard/admin/user_notification/')}}">Users Notification</a></li>
-
-                </ul>
-              </div>
-            </li>
-
-
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{{ url('/dashboard/admin/artwork/') }}">
-                <span class="menu-icon">
-                  <i class="mdi mdi-playlist-play"></i>
-                </span>
-                <span class="menu-title">Artwork</span>
-              </a>
-            </li>
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{{ url('dashboard/admin/gallery/') }}">
-                <span class="menu-icon">
-                  <i class="mdi mdi-table-large"></i>
-                </span>
-                <span class="menu-title">Gallery</span>
-              </a>
-            </li>
-
-
-            <li class="nav-item menu-items">
-                <a class="nav-link" href="{{ url('dashboard/admin/friend/') }}">
-                  <span class="menu-icon">
-                    <i class="mdi mdi-table-large"></i>
-                  </span>
-                  <span class="menu-title">Friend</span>
-                </a>
-              </li>
-
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="/tags">
-                <span class="menu-icon">
-                  <i class="{{ url('dashboard/admin/tags/') }}"></i>
-                </span>
-                <span class="menu-title">Tags</span>
-              </a>
-            </li>
-            <li class="nav-item menu-items">
-              <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-                <span class="menu-icon">
-                  <i class="mdi mdi-security"></i>
-                </span>
-                <span class="menu-title">Social Interaction</span>
-                <i class="menu-arrow"></i>
-              </a>
-              <div class="collapse" id="auth">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ url('dashboard/admin/messages/') }}"> Message </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="{{ url('dashboard/admin/user_about/') }}"> Users About </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html">Conversation </a></li>
-
-                  <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Sender Message </a></li>
-
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="http://www.bootstrapdash.com/demo/corona-free/jquery/documentation/documentation.html">
-                <span class="menu-icon">
-                  <i class="mdi mdi-file-document-box"></i>
-                </span>
-                <span class="menu-title">Documentation</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
           <!-- partial:partials/_navbar.html -->
@@ -215,11 +53,14 @@
                 <span class="mdi mdi-menu"></span>
               </button>
               <ul class="navbar-nav w-100">
-                <li class="nav-item w-100">
-                  <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                    <input type="text" class="form-control" placeholder="Search products">
-                  </form>
-                </li>
+
+                    <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
+                        <h4 class="welcome-text"  id="greeting"> <span class="text-black fw-bold"></span>
+
+                      </h4>
+                        <h3 class="welcome-sub-text" id="slogan">"Every artist was first an amateur"</h3>
+                      </li>
+
               </ul>
               <ul class="navbar-nav navbar-nav-right">
                 <li class="nav-item dropdown d-none d-lg-block">
@@ -359,8 +200,8 @@
                 <li class="nav-item dropdown">
                   <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                     <div class="navbar-profile">
-                      <img class="img-xs rounded-circle" src="assets/images/faces/face15.jpg" alt="">
-                      <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+                      <img class="img-xs rounded-circle" src="{{asset(Auth::user()->profile_img)}}" alt="">
+                      <p class="mb-0 d-none d-sm-block navbar-profile-name">{{Auth::user()->firstname}}</p>
                       <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                     </div>
                   </a>
@@ -378,14 +219,15 @@
                       </div>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
+                    <a href="{{url('admin/login')  }}" class="dropdown-item preview-item">
                       <div class="preview-thumbnail">
                         <div class="preview-icon bg-dark rounded-circle">
                           <i class="mdi mdi-logout text-danger"></i>
                         </div>
                       </div>
                       <div class="preview-item-content">
-                        <p class="preview-subject mb-1">Log out</p>
+                        <p class="preview-subject mb-1">
+                            Log out</p>
                       </div>
                     </a>
                     <div class="dropdown-divider"></div>
@@ -405,18 +247,13 @@
 
           <!-- partial -->
 
-          <div class="main-panel">
+          <div class="main-panel" style="background-color:white ;">
 
 
             <!-- contentweb-wrapper ends -->
             <!-- partial:partials/_footer.html -->
             @yield('AdminContent')
-            <footer class="footer">
-              <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
-              </div>
-            </footer>
+
             <!-- partial -->
           </div>
           <!-- main-panel ends -->
@@ -459,4 +296,73 @@
 
     <!-- End custom js for this page -->
   </body>
+
+  <script>
+    // Get the current time
+    var currentTime = new Date();
+    var currentHour = currentTime.getHours();
+    var currentMinute = currentTime.getMinutes();
+
+    // Function to format minutes with leading zero
+    function formatMinutes(minutes) {
+      return (minutes < 10 ? '0' : '') + minutes;
+    }
+
+    // Get the greeting element by its ID
+    var greetingElement = document.getElementById('greeting');
+
+    if (currentHour >= 5 && currentHour < 12) {
+      greetingElement.textContent = 'Good Night ';
+    } else if (currentHour >= 12 && currentHour < 24) {
+      greetingElement.textContent = 'Good Morning';
+    } else {
+      greetingElement.textContent = 'Good After';
+    }
+
+    // Combine username and greeting in one line
+    greetingElement.textContent += ' ';
+
+    // Add a custom greeting for 11:40
+    if (currentHour === 11 && currentMinute === 40) {
+      greetingElement.innerHTML += '<br>Special greeting for 11:40!';
+    }
+
+    // Function to change h3 content one by one
+    function changeH3ContentSequentially() {
+      // Select the h3 element
+      var h3Element = document.getElementById('slogan');
+
+      // Array of slogans
+      var slogans = [
+        "Every artist was first an amateur.",
+        "Art is the stored honey of the human soul.",
+        "Creativity takes courage  Henri Matisse."
+      ];
+
+      // Function to update slogan with a delay
+      function updateSlogan(index) {
+        // Update the content of h3 element
+        h3Element.innerText =  slogans[index] ;
+
+        // Increment index for the next slogan
+        index++;
+
+        // Change slogan every 5 seconds, if there are more slogans
+        if (index < slogans.length) {
+          setTimeout(function () {
+            updateSlogan(index);
+          }, 5000);
+        }
+      }
+
+      // Start updating slogans
+      updateSlogan(0);
+    }
+
+
+    setTimeout(changeH3ContentSequentially, 1000);
+
+
+
+  </script>
 </html>

@@ -1,25 +1,6 @@
 @extends('Layout.Dashboard_layout')
 
-<style>
-    .bg-green{
-        background-color: #00d25b;
-    }
-    .btn-green{
-        background-color: #00d25b;
-        color: white;
-    }
-    button.bg-green{
-        background-color: #00d25b;
-        color: white;
 
-    }
-    .bg-green th{
-        color: white !important;
-    }
-    tbody tr{
-        color: white !important;
-    }
-</style>
 @section('AdminContent')
     <div class="container mt-5 ">
         <h3>Users Table</h3>
@@ -46,7 +27,7 @@
                             <div class="input-group">
                                 <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.."
                                 class="form-control">
-                                <button class="btn  btn-success"><a style="text-decoration:none ;" href="{{url('dashboard/admin/userprofile/add')}}" class="text-white">Add User</a></button>
+                               
                             </div>
                         </div>
 
@@ -63,8 +44,7 @@
 
                     <th>First_Name</th>
                     <th>Profile id</th>
-                    <th>Profile_Img</th>
-                    <th>Banner_Img</th>
+
 
 
 
@@ -76,8 +56,7 @@
 <tr class="">
     <td>{{ $item->firstname }}</td>
     <td>{{ $item->profile_id }}</td>
-    <td>{{ $item->profile_img }}</td>
-    <td>{{ $item->banner_img }}</td>
+
 
 </tr>
 @endforeach

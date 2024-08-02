@@ -14,6 +14,7 @@
                     <form action="{{ url('/dashboard/admin/about/update', $about->about_id) }}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                         @csrf
 
+
                         <div class="mb-3">
                             <label for="bio" class="form-label">Bio</label>
                             <input type="text" class="form-control" id="bio" name="bio" value="{{ old('bio', $about->bio) }}" placeholder="Enter bio" required>
@@ -78,7 +79,7 @@
                             </div>
                         </div>
 
-
+                        <label for="live" class="form-label">Users</label>
                         <select name="user_id" id="user_id" class="form-control" required>
                             <option value="">Users</option>
                             @foreach ($users as $item)

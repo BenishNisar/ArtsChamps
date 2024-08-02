@@ -14,7 +14,7 @@
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" required class="form-control" id="name" name="name" placeholder="Enter your name" required>
+                            <input type="text" required class="form-control" id="name" name="name" placeholder="Enter your role" required>
                             @error('name')
                             <div class="alert alert-danger">
                                 {{ $message }}

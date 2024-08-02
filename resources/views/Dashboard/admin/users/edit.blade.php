@@ -65,11 +65,33 @@
                         </div>
                         <div class="mb-3">
                             <label for="created_at" class="form-label">Created At</label>
-                            <input type="date" class="form-control" id="created_at"value="{{ $user->created_at }}" name="created_at" required>
+                            <input type="date" class="form-control" id="created_at" value="{{ $user->created_at }}" name="created_at" required>
                             <div class="invalid-feedback">
                                 Valid date is required.
                             </div>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Profile  Img</label>
+                            <input type="file" class="form-control" id="profile_img"
+                            value="{{ $user->profile_img }}"  name="profile_img" placeholder="Enter your name" required>
+                            <div class="invalid-feedback">
+                                Valid name is required.
+                            </div>
+                        </div>
+
+
+
+                        <div class="mb-3">
+                            <label for="created_at" class="form-label">Updated at</label>
+                            <input type="date" class="form-control" id="updated_at" name="updated_at" value="{{ $user->updated_at }}"  required>
+                            <div class="invalid-feedback">
+                                Valid date is required.
+                            </div>
+                        </div>
+
+
+
                         <div class="mb-3">
                             <label for="role_id" class="form-label">Role ID</label>
                             <select name="role_id" value="{{ $user->role_id }}" id="" class="form-control">
@@ -95,7 +117,13 @@
                             </div>
                         </div>
 
-
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Banner  Img</label>
+                            <input type="file" class="form-control" id="banner_img" value="{{ $user->banner_img }}"  name="banner_img" placeholder="Enter your name" required>
+                            <div class="invalid-feedback">
+                                Valid name is required.
+                            </div>
+                        </div>
 
                         <button class="btn btn-success mt-3 w-100" type="submit">Submit</button>
                     </form>

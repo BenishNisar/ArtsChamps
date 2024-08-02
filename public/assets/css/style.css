@@ -99,7 +99,8 @@ body {
     font-family: 'Arial', sans-serif;
   }
   .navbar {
-    background-color: #863c71;
+    background-color: white;
+    color: black;;
 
 
   }

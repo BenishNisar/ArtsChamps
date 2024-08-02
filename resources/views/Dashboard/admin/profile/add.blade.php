@@ -24,6 +24,20 @@
                                 Valid profile image is required.
                             </div>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="user_id" class="form-label">User_id</label>
+                            <select name="user_id" id="" class="form-control">
+                                <option value="">Users</option>
+                                @foreach ($users as $item)
+                                <option value="{{ $item->id }}">{{ $item->firstname }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">
+                                Valid role ID is required.
+                            </div>
+                        </div>
+
                         <div class="mb-3">
                             <label for="banner_img" class="form-label">Banner Img</label>
                             <input type="file" class="form-control" id="banner_img" name="banner_img" required>

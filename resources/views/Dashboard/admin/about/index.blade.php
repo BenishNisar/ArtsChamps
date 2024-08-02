@@ -1,43 +1,8 @@
 @extends('Layout.Dashboard_layout')
 
-<style>
-    .bg-green {
-        background-color: #00d25b;
-    }
-    .btn-green {
-        background-color: #00d25b;
-        color: white;
-    }
-    button.bg-green {
-        background-color: #00d25b;
-        color: white;
-    }
-    .bg-green th {
-        color: white !important;
-    }
-    tbody tr {
-        color: white !important;
-    }
-    table {
-        width: 100%;
-        table-layout: auto;
-    }
-    .container {
-        max-width: 1200px; /* Adjust max-width to your preference */
-        margin: auto;
-    }
-    .pagination-container {
-        margin-top: 20px;
-    }
-    .rows_count {
-        margin-top: 10px;
-    }
-    @media (max-width: 768px) {
-        table {
-            font-size: 0.8em; /* Adjust font size for smaller screens */
-        }
-    }
-</style>
+
+
+
 
 @section('AdminContent')
     <div class="container mt-5">
@@ -47,7 +12,6 @@
                 <div class="row justify-content-between">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <!-- Show Numbers Of Rows -->
                             <select class="form-control" name="state" id="maxRows">
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -64,7 +28,9 @@
                         <div class="tb_search">
                             <div class="input-group">
                                 <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
-                                <button class="btn btn-success"><a style="text-decoration: none;" href="{{ url('dashboard/admin/about/add') }}" class="text-white">Add User</a></button>
+                                <button class="btn btn-success">
+                                    <a href="{{ url('dashboard/admin/about/add') }}" class="text-white" style="text-decoration: none;">Add About</a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -72,21 +38,16 @@
             </div>
         </div>
 
-        <!-- Table with initial columns -->
         <table class="table table-striped table-class" id="table-id1">
             <thead class="bg-green">
                 <tr>
                     <th>#</th>
                     <th>Bio</th>
                     <th>User</th>
-
-
                     <th>Date Of Birth</th>
-                    <th>Social Media</th>
-                    <th>Art_Style</th>
+                    <th>Art Style</th>
                     <th>Rating</th>
                     <th>Action</th>
-
                 </tr>
             </thead>
             <tbody>
@@ -96,32 +57,24 @@
                     <td>{{ $item->bio }}</td>
                     <td>{{ $item->firstname }}</td>
                     <td>{{ $item->date_of_birth }}</td>
-                    <td>{{ $item->social_media }}</td>
                     <td>{{ $item->art_style }}</td>
                     <td>{{ $item->rating }}</td>
                     <td>
-                        <a href="{{ url('/dashboard/admin/about/edit') }}/{{ $item->about_id }}" class="btn btn-warning">Edit</a>
-                        <a href="{{ url('/dashboard/admin/about/delete') }}/{{ $item->about_id }}" class="btn btn-danger">Delete</a>
+                        <a href="{{ url('/dashboard/admin/about/delete', $item->about_id) }}" class="btn btn-danger">Delete</a>
                     </td>
-
-
-
                 </tr>
                 @endforeach
             </tbody>
         </table>
 
-
-
-        <!-- Pagination -->
         <div class="pagination-container">
             <nav>
                 <ul class="pagination" id="pagination">
-
+                    <!-- Pagination content will be generated dynamically here -->
                 </ul>
             </nav>
         </div>
 
         <div class="rows_count" id="rows_count">Showing 1 to 5 of {{ count($about) }} entries</div>
-    </div> <!-- End of Container -->
+    </div>
 @endsection

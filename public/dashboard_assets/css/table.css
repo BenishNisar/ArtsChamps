@@ -1,0 +1,34 @@
+.bg-green{
+    background-color: #00d25b;
+}
+.btn-green{
+    background-color: #00d25b;
+    color: white;
+}
+button.bg-green{
+    background-color: #00d25b;
+    color: white;
+
+}
+.bg-green th{
+    color: white !important;
+}
+tbody tr{
+    color: white !important;
+}
+table{
+    background-color: black;
+    border: 2px solid white;
+}
+
+
+
+.card-body{
+
+
+    color: white;
+    font-size: 20px;
+font-family: bold;
+
+}
+

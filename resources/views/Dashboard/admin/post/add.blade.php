@@ -23,6 +23,19 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="user_id" class="form-label">User_id</label>
+                            <select name="user_id" id="" class="form-control">
+                                <option value="">Users</option>
+                                @foreach ($users as $item)
+                                <option value="{{ $item->id }}">{{ $item->firstname }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">
+                                Valid role ID is required.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="created_at" class="form-label">Created At</label>
                             <input type="date" required class="form-control" id="created_at" name="created_at">
                             @error('created_at')

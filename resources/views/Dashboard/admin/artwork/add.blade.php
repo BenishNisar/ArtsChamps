@@ -59,14 +59,7 @@
                             </div>
                             @enderror
 
-                            <label for="created_at" class="form-label">Created At</label>
-                            <input type="datetime-local" required class="form-control" id="created_at" name="created_at">
-                            @error('created_at')
-                            <div class="alert alert-danger">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
+                      
                         <button class="btn btn-success mt-3 w-100" name="submit" type="submit">Submit</button>
                     </form>
                 </div>

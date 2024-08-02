@@ -212,12 +212,14 @@
 
             <div class="left-column">
 
-
-
                 <div class="card card-left1 mb-4" >
-                    <img src="{{asset('assets/img/Artsbanner.png')}}" alt="" class="card-img-top img-fluid">
+                    @if ($profile)
+                    <img src="{{asset(Auth::user()->banner_img)}}" width="100px" height="50px" alt="" class="card-img-top img-fluid">
+                    @else
+                    <img src="{{asset(Auth::user()->banner_img)}}" alt="" class="card-img-top img-fluid">
+                    @endif
                     <div class="card-body text-center ">
-                        <img src="{{asset('assets/img/profilelogo.png')}}" alt="img" width="120px" height="120px" class="rounded-circle mt-n5">
+                        <img src="{{asset(Auth::user()->profile_img)}}" alt="img" width="120px" height="120px" class="rounded-circle mt-n5">
                         <h5 class="card-title">{{ Auth::user()->firstname }}{{ Auth::user()->lastname }}</h5>
                         <p class="card-text text-center mb-2">  {{ $about ? $about->bio : 'No bio available' }}</p>
                         <ul class="list-unstyled nav justify-content-center">
@@ -233,62 +235,59 @@
                 </div>
 
 
- <div class="card shadow-sm card-left2 mb-4">
+<!-- About Section -->
+<div class="card shadow-sm card-left2 mb-4">
+    <div class="card-body">
+        <h5 class="mb-3 card-title">About <small><a href="#" class="ml-1" data-toggle="modal" data-target="#editModal">Edit</a></small></h5>
+        <p class="card-text"><i class="fas fa-calendar-week mr-2"></i> Went to <a href="#" class="text-decoration-none">{{ $about ? $about->work : 'No Bio available' }}</a></p>
+        <p class="card-text"><i class="fas fa-user-friends mr-2"></i> Become a friend with <a href="#" class="text-decoration-none">{{ $about ? $about->art_style : 'No Bio available' }}</a></p>
+        <p class="card-text"><i class="fas fa-home mr-2"></i> Live in <a href="#" class="text-decoration-none">{{ $about ? $about->live : 'No Bio available' }}</a></p>
+        <p class="card-text"><i class="fas fa-map-marker mr-2"></i> From <a href="#" class="text-decoration-none">{{ $about ? $about->location : 'No Bio available' }}</a></p>
 
-                    <div class="card-body">
-
-                          <!-- Button to trigger modal -->
-<a href="#" class="ml-1 mb-2" data-toggle="modal" data-target="#editModal">Edit</a>
-
-<!-- Modal Structure -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Bio Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <!-- Modal Structure -->
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit Bio Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ route('about.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="work">Work</label>
+                                <input type="text" class="form-control" id="work" name="work" value="{{ $about ? $about->work : '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="art_style">Art Style</label>
+                                <input type="text" class="form-control" id="art_style" name="art_style" value="{{ $about ? $about->art_style : '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="live">Live</label>
+                                <input type="text" class="form-control" id="live" name="live" value="{{ $about ? $about->live : '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" class="form-control" id="location" name="location" value="{{ $about ? $about->location : '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="bio">Bio</label>
+                                <input type="text" class="form-control" id="bio" name="bio" value="{{ $about ? $about->bio : '' }}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <form action="{{ route('about.update') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="work">Work</label>
-                        <input type="text" class="form-control" id="work" name="work" value="{{ $about ? $about->work : 'No Bio available' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="art_style">Art Style</label>
-                        <input type="text" class="form-control" id="art_style" name="art_style" value="{{ $about ? $about->art_style : 'No Bio available' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="live">Live</label>
-                        <input type="text" class="form-control" id="live" name="live" value="{{ $about ? $about->live : 'No Bio available' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="location">Location</label>
-                        <input type="text" class="form-control" id="location" name="location" value="{{ $about ? $about->location : 'No Bio available' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="bio">Bio</label>
-                        <input type="text" class="form-control" id="bio" name="bio" value="{{ $about ? $about->bio : 'No Bio available' }}">
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
-
-
-
         </div>
     </div>
-</div>
-
-</div>
 </div>
 
 
@@ -297,71 +296,63 @@
                 <div class="card shadow-sm card-left3 mb-4">
 
                     <div class="card-body">
-                        <h5 class="card-title">Photos<small class="ml-2"><a href="#">.Edit </a></small></h5>
-
-                        <div class="row">
-                            <div class="col-6 p-1">
-                                <a href="#" data-lightbox="id" ><img src="{{asset('assets/img/left1.jpg')}}" alt="img" class="img-fluid my-2"></a>
-                                <a href="#"data-lightbox="id"><img src="{{asset('assets/img/left2.jpg')}}" alt="img" class="img-fluid my-2"></a>
-                                <a href="#"data-lightbox="id"><img src="{{asset('assets/img/left3.jpg')}}" alt="img" class="img-fluid my-2"></a>
-
-                            </div>
 
 
-                            <div class="col-6 p-1">
-                                    <a href="#"data-lightbox="id"><img src="{{asset('assets/img/left4.jpg')}}" alt="img" class="img-fluid my-2"></a>
-                                    <a href="#"data-lightbox="id"><img src="{{asset('assets/img/left5.jpg')}}" alt="img" class="img-fluid my-2"></a>
-                                    <a href="#"data-lightbox="id"><img src="{{asset('assets/img/left6.jpg')}}" alt="img" class="img-fluid my-2"></a>
+                                <div class="card-title d-flex justify-content-between">
+                                    <h5>Photos</h5>
+                                        <!-- Add link to trigger modal -->
+                                        <a href="#"  data-toggle="modal" data-target="#uploadModal" class="btn btn-sm text-end"
+                                        style="color: #007acc;">Add Gallery</a>
+                                </div>
 
+                                <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="uploadModalLabel">Upload Image</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{ route('gallery.upload') }}" method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="gallery_img">Select Image</label>
+                                                        <input type="file" class="form-control-file" id="gallery_img" name="gallery_img" required>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Gallery Images -->
+
+
+
+
+                                <div class="row" id="gallery">
+                                    @foreach ($gallery as $image)
+                                        <div class="col-6 p-1">
+                                            <a href="{{ asset('assets/gallery/' . $image->gallery_img) }}" data-lightbox="gallery">
+                                                <img src="{{ asset('assets/gallery/' . $image->gallery_img) }}" alt="img" class="img-fluid my-2">
+                                            </a>
+                                        </div>
+                                    @endforeach
                                 </div>
 
                         </div>
-
                     </div>
-
-
-
-
-
-
-
-                    </div>
-
-
-
-
-
-
-
-
-
-
-
-
             </div>
 
-
-
-
-
         </div>
-
-
-
-
-
-
-
-
 <!--------------------------Ends Left columns-->
 
 
 
-
-
 <!---------------------------------------Middle columns  start---------------->
-
-
 
 
         <div class="col-12 col-lg-6" >
@@ -396,13 +387,13 @@
                                                         <input type="file" name="post_img" id="fileInput" style="display: none;" multiple>
 
                                                         <button type="button" class="btn btn-link post-form-btn btn-sm">
-                                                            <img src="{{ asset('assets/images/icons/theme/tag-friend.png') }}" alt="post form icon">
+                                                            <img src="{{ asset('assets/img/tag.jpg') }}" alt="post form icon">
                                                             <span>Tag Friends</span>
                                                         </button>
-                                                        <button type="button" class="btn btn-link post-form-btn btn-sm">
-                                                            <img src="{{ asset('assets/images/icons/theme/check-in.png') }}" alt="post form icon">
+                                                        {{-- <button type="button" class="btn btn-link post-form-btn btn-sm">
+                                                            <img src="{{ asset('assets/img/check_in.webp') }}" alt="post form icon">
                                                             <span>Check In</span>
-                                                        </button>
+                                                        </button> --}}
                                                     </div>
                                                     <button type="submit" name="submit" class="btn btn-primary btn-sm">Publish</button>
                                                 </div>
@@ -413,19 +404,11 @@
                             </form>
 
                             <!-- Display Posts -->
-                            @foreach ($posts as $post)
-                            <div class="card post-card mb-4">
-                                <div class="card-body">
-                                    <p class="post-content">{{ $post->content }}</p>
-                                    @if ($post->post_img)
-                                    <img src="{{ asset($post->post_img) }}" alt="Post Image" class="post-img">
-                                    @endif
-                                                                </div>
-                                <div class="card-footer post-meta">
-                                    <small>Posted on {{ \Carbon\Carbon::parse($post->created_at)->format('d M Y, H:i') }}</small>
-                                </div>
-                            </div>
-                        @endforeach
+
+
+
+
+
 
 
                         </div>
@@ -437,7 +420,7 @@
 
 
 
-
+@foreach ($posts as $post)
 
                     <div class="card-body">
                         <div class="container">
@@ -447,7 +430,7 @@
 
                                         <div class="media-body pb-3 mb-0 small lh-125">
                                             <div class="d-flex justify-content-between align-items-center w-100">
-                                                <a href="#" class="text-gray-dark post-user-name">John Michael</a>
+                                                <a href="#" class="text-gray-dark post-user-name">{{ Auth::user()->firstname }}</a>
                                                 <div class="dropdown">
                                                     <a href="#" class="post-more-settings" role="button" data-toggle="dropdown" id="postOptions" aria-haspopup="true" aria-expanded="false">
                                                         <i class='bx bx-dots-horizontal-rounded'></i>
@@ -500,17 +483,27 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <span class="d-block">3 hours ago <i class='bx bx-globe ml-3'></i></span>
-                                            <img src="{{asset('assets/users/user-1.jpg')}}" alt="Online user" width="400px" height="400px" class="mr-3 post-user-image">
+                                            <span class="d-block"> {{ \Carbon\Carbon::parse($post->created_at)->format('d M Y, H:i') }} <i class='bx bx-globe ml-3'></i></span>
+                                            @if ($post->post_img)
+                                            <img src="{{ asset($post->post_img) }}" alt="Online user" width="400px" height="400px" class="mr-3 post-user-image">
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="mt-3">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis voluptatem veritatis harum, tenetur, quibusdam voluptatum, incidunt saepe minus maiores ea atque sequi illo veniam sint quaerat corporis totam et. Culpa?</p>
+                                        <p> {{ $post->content }}</p>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div class="d-flex">
-                                            <a href="javascript:void(0)" class="post-card-buttons"><i class='bx bxs-like mr-2'></i> Like</a>
-                                            <a href="javascript:void(0)" class="post-card-buttons ml-3"><i class='bx bx-message-rounded mr-2'></i> Comment</a>
+                                            <a href="javascript:void(0)" id="likebtn" data-id="{{ $post->post_id }}" data-lstatus="{{ $post->lstatus }}"  class="post-card-buttons">
+                                                <i class='bx bxs-like mr-2 @if ($post->lstatus == 1)
+                                                    text-dark fw-bold
+                                                    @else
+                                                    text-primary
+                                                    @endif'
+                                                >&nbsp;Like </i> </a>
+                                            <a href="javascript:void(0)" id="commentbtn" data-id="{{ $post->post_id }}" class="post-card-buttons ml-3">
+                                                <i class='bx bx-message-rounded mr-2'></i> Comment</a>
+
                                             <div class="dropdown dropup share-dropup ml-3">
                                                 <a href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i class='bx bx-share-alt mr-2'></i> Share
@@ -548,6 +541,7 @@
                                                     </a>
                                                 </div>
                                             </div>
+
                                             <div class="dropdown dropup billing-dropup ml-3">
                                                 <a href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i class='bx bx-money mr-2'></i> Billing
@@ -577,7 +571,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="border-top pt-3 hide-comments" style="display: none;">
+
+
+                                    <div class="border-top pt-3 hide-comments" id="commentsesction" style="display: none;">
                                         <div class="row bootstrap snippets">
                                             <div class="col-md-12">
                                                 <div class="comment-wrapper">
@@ -586,7 +582,7 @@
                                                             <ul class="media-list comments-list">
                                                                 <li class="media comment-form">
                                                                     <a href="#" class="pull-left">
-                                                                        <img src="assets/images/users/user-4.jpg" alt="" class="img-circle">
+                                                                        <img src="{{ asset('assets/images/users/user-4.jpg') }}" alt="" class="img-circle">
                                                                     </a>
                                                                     <div class="media-body">
                                                                         <form action="" method="" role="form">
@@ -606,6 +602,11 @@
                                                                         </form>
                                                                     </div>
                                                                 </li>
+                                                                <br>
+                                                <div id="commentsection-inner">
+
+                                                </div>
+
                                                                 <!-- Additional comments can be added here -->
                                                             </ul>
                                                         </div>
@@ -620,7 +621,7 @@
                     </div>
 
 
-
+                    @endforeach
 
 <hr>
 
@@ -1073,7 +1074,7 @@
 
         <div class="card-body">
 
-                <h6 class="card-title ">Likes <a href="#" class="ml-1"><small>.View All</small> </a> </h6>
+                <h6 class="card-title ">Friends <a href="#" class="ml-1"><small>.View All</small> </a> </h6>
                 <div class="row no-gutters d-none d-lg-flex">
                     <div class="col-6 p-1">
                       <img src="{{asset('assets/img/avatar-dhg.png')}}" alt="img" width="80px" height="80px" class="rounded-circle mb-4">
@@ -1123,64 +1124,106 @@
                     <a href="#">Apps</a>
                     <a href="#">Jobs</a>
                     <a href="#">Advertise</a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             </p>
         </div>
 
     </div>
 
-
-
-
-
-
-
-
-
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   </div>
-
-
-
-
-
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script>
+
+    $(document).ready(function(){
+
+        $('#likebtn').click(function(){
+
+            let postid  = $(this).data('id');
+            let lstatus  = $(this).data('lstatus');
+
+            $('#likebtn').html('Loading..');
+
+                $.ajax({
+                url: "{{ url('/like-post') }}/"+postid,
+                method: 'POST',
+                data: {
+                        _token: '{{ csrf_token() }}',  // Include CSRF token for security
+                        post_id: postid,
+                        lstatus: lstatus
+                    },
+
+            success: function(response) {
+                if (response.success) {
+                    $('#likebtn').html("<i class='bx bxs-like mr-2 text-dark fw-bold'>&nbsp;Like</i>");
+                }
+                if (response.message) {
+                    $('#likebtn').html("<i class='bx bxs-like mr-2 text-primary '>&nbsp;Like</i>");
+                }
+            }
+
+        });
+
+        });
+
+
+        $('#commentbtn').click(function(){
+
+    let postid  = $(this).data('id');
+
+    $.ajax({
+    url: "{{ url('/all-comments') }}/"+postid,
+    method: 'GET',
+
+    success: function(response) {
+
+        let commentarray = response.comments;
+
+        console.log(commentarray);
+
+        $('#commentsesction').css('display','block');
+
+        let data = '';
+
+        commentarray.forEach(item => {
+            data += `
+            <div class="card">
+            <div class="card-head p-2 d-flex justify-content-between">
+                <p>
+                    ${item.firstname} ${item.lastname}
+                    </p>
+                    <p>
+                    ${item.created_at}
+                    </p>
+                                                    </div>
+                                                    <div class="card-body p-2">
+                                                    ${item.comment_name}
+                                                    </div>
+                                                </div>
+                                                `;
+        });
+
+        $('#commentsection-inner').html(data);
+
+
+        // $('#likebtn').html("<i class='bx bxs-like mr-2 text-dark fw-bold'>&nbsp;Like</i>");
+
+
+}
+
+});
+
+});
+
+
+
+    });
+
+</script>
+<script src="{{url('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js')}}"></script>
+<script src="{{url('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js')}}"></script> 
 
 @endsection

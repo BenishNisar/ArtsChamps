@@ -5,10 +5,11 @@
         <h3>Post Table</h3>
         <div class="header_wrap">
             <div class="num_rows">
-                <div class="row">
-                    <div class="col-md-6">
+                <div class="row justify-content-between">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <select class="form-control" name="state" id="maxRows">
+                                <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="15">15</option>
                                 <option value="20">20</option>
@@ -22,8 +23,9 @@
                     <div class="col-md-4">
                         <div class="tb_search">
                             <div class="input-group">
-                                <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
-                                <a href="{{ url('dashboard/admin/post/add') }}" class="btn btn-success text-white">Add Post</a>
+                                <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()"
+                                    placeholder="Search.." class="form-control">
+
                             </div>
                         </div>
                     </div>
@@ -46,6 +48,9 @@
                         <th>Content</th>
                         <th>Created_at</th>
                         <th>Post_Image</th>
+                        @if (Auth::user()->role_id == 1)
+                            <th>Artist Name</th>
+                        @endif
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -56,11 +61,17 @@
                             <td>{{ $item->content }}</td>
                             <td>{{ $item->created_at }}</td>
                             <td>
-                                <img src="{{ $item->post_img }}" alt="Post Image" style="max-width: 100px; max-height: 100px;">
+                                <img src="{{ asset($item->post_img) }}" alt="Post Image"
+                                    style="max-width: 100px; max-height: 100px;">
                             </td>
+                            @if (Auth::user()->role_id == 1)
+                                <td>{{ $item->firstname }}</td>
+                            @endif
                             <td>
-                                <a href="{{ url('/dashboard/admin/post/edit') }}/{{ $item->post_id }}" class="btn btn-warning">Edit</a>
-                                <a href="{{ url('/dashboard/admin/post/delete') }}/{{ $item->post_id }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this post?')">Delete</a>
+
+                                <a href="{{ url('/dashboard/admin/post/delete') }}/{{ $item->post_id }}"
+                                    class="btn btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete this post?')">Delete</a>
                             </td>
                         </tr>
                     @endforeach

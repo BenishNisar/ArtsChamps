@@ -46,7 +46,7 @@
                             <div class="input-group">
                                 <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.."
                                 class="form-control">
-                                <button class="btn  btn-success"><a style="text-decoration: none;" href="{{url('dashboard/admin/notification/add')}}" class="text-white">Add Role</a></button>
+                                <button class="btn  btn-success"><a style="text-decoration: none;" href="{{url('dashboard/admin/notification/add')}}" class="text-white">Add </a></button>
                             </div>
                         </div>
 

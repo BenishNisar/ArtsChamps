@@ -46,7 +46,7 @@
                             <div class="input-group">
                                 <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.."
                                 class="form-control">
-                                <button class="btn  btn-success"><a style="text-decoration: none;" href="{{url('dashboard/admin/messages/add')}}" class="text-white">Add Role</a></button>
+                                <button class="btn  btn-success"><a style="text-decoration: none;" href="{{url('dashboard/admin/messages/add')}}" class="text-white">Add Message</a></button>
                             </div>
                         </div>
 
@@ -70,7 +70,7 @@
                     <th>#</th>
                     <th> Sender_id</th>
                     <th>Message</th>
-                    <th>Created_at</th>
+
                     <th>Recipient</th>
                     <th>Action</th>
 
@@ -84,9 +84,9 @@
                 <tr class="">
                     <td>{{$item->message_id }}</td>
                     <td>{{ $item->firstname }}</td>
-                    <td>{{ $item->message }}</td>
-                    <td>{{ $item->created_at }}</td>
-                    <td>{{ $item->recipient }}</td>
+                    <td>{{ $item->sender_message }}</td>
+
+                    <td>{{ $item->message_text }}</td>
 
                     <td>
                         <a href="{{ url('/dashboard/admin/messages/edit') }}/{{ $item->message_id }}" class="btn btn-warning">Edit</a>

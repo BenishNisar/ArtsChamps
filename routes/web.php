@@ -26,18 +26,19 @@ Route::get('/logout',[LoginController::class,'logout']);
 
 Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
-
+// home
 
 Route::put('/about/update', [HomeController::class, 'update'])->name('about.update')->middleware('auth');
-
+Route::post('/gallery/upload', [HomeController::class, 'uploadImage'])->name('gallery.upload');
+Route::get('/gallery', [HomeController::class, 'showGallery'])->name('gallery.show');
 
 Route::get('/Home/profile',[FrontendProfileController::class,'index']);
 
-
-Route::get('/Home/messages',[FrontendMessageController::class,'index']);
+// gallery
+Route::put('/gallery/about/update', [FrontendGalleryController::class, 'update'])->name('about.update')->middleware('auth');
 Route::get('/Home/gallery',[FrontendGalleryController::class,'index']);
-
-
+Route::post('/gallery/upload', [FrontendGalleryController::class, 'uploadImage'])->name('gallery.upload');
+Route::get('/gallery', [FrontendGalleryController::class, 'showGallery'])->name('gallery.show');
 // Route::get('/Front_dashboard',[AdminController::class,'dashboardadmin']);
 // Route::get('/users',[UserController::class,'users']);
 
@@ -48,6 +49,16 @@ Route::get('admin/login',[AdminLoginController::class,'adminlogin'])->name('admi
 Route::post('admin/login-store',[AdminLoginController::class,'adminloginstore']);
 Route::get('admin/logout',[AdminLoginController::class,'logout'])->name('admin.logout');
 
+
+
+// artist_dashboard
+Route::get('artist/login',[ArtistController::class,'artistlogin'])->name('artistlogin');
+Route::post('artist/login-store',[ArtistController::class,'artistloginstore']);
+Route::get('artist/logout',[ArtistController::class,'logout'])->name('artist.logout');
+Route::get('/artistdashboard', [ArtistController::class, 'artistdashboard']);
+
+
+    // admin
 
 Route::get('/dashboard',[AdminController::class,'index'])->middleware(['auth','adminlogin']);
 Route::get('/dashboard/admin/users/',[UserController::class,'index']);
@@ -137,6 +148,8 @@ Route::get('/dashboard/admin/gallery/delete/{id}',[GalleryController::class,'del
 
 
 
+
+
 Route::get('/dashboard/admin/user_about/',[UseraboutController::class,'index']);
 Route::get('/dashboard/admin/user_about/add',[UseraboutController::class,'add']);
 Route::post('/dashboard/admin/user_about/store',[UseraboutController::class,'store']);
@@ -158,12 +171,13 @@ Route::get('/dashboard/admin/post/delete/{id}',[PostController::class,'delete'])
 
 
 
-Route::get('/dashboard/admin/messages/',[MessageController::class,'index']);
+Route::get('/dashboard/admin/messages',[MessageController::class,'index']);
 Route::get('/dashboard/admin/messages/add',[MessageController::class,'add']);
 Route::post('/dashboard/admin/messages/store',[MessageController::class,'store']);
 Route::get('/dashboard/admin/messages/edit/{id}',[MessageController::class,'edit']);
-Route::post('/dashboard/admin/messages/update/{id}',[MesssageController::class,'update']);
+Route::put('/dashboard/admin/update/{id}', [MessageController::class, 'update'])->name('messages.update');
 Route::get('/dashboard/admin/messages/delete/{id}',[MessageController::class,'delete']);
+
 
 Route::get('/dashboard/admin/socialmedia/',[SocialController::class,'index']);
 Route::get('/dashboard/admin/socialmedia/add',[SocialController::class,'add']);
@@ -181,3 +195,40 @@ Route::post('/dashboard/admin/friend/store',[FriendController::class,'store']);
 Route::get('/dashboard/admin/friend/edit/{id}',[FriendController::class,'edit']);
 Route::post('/dashboard/admin/friend/update/{id}',[FriendController::class,'update']);
 Route::get('/dashboard/admin/friend/delete/{id}',[FriendController::class,'delete']);
+
+
+// like comment share routes
+Route::post('/like-post/{id}', [HomeController::class, 'likePost'])->name('like_post');
+Route::get('/all-comments/{id}', [HomeController::class, 'allcomments'])->name('allcomments');
+
+
+
+use App\Http\Controllers\FrontendMessageController;
+
+// Route to display messages
+Route::get('/Home/messages', [FrontendMessageController::class, 'index'])->name('messages.index');
+
+// Route to store a new message
+Route::post('/Home/messages/store', [FrontendMessageController::class, 'store'])->name('messages.store');
+
+
+Route::get('/profile', [FrontendProfileController::class, 'index'])->name('profile');
+Route::post('/upload-profile-image', [FrontendProfileController::class, 'uploadProfileImage']);
+Route::post('/upload-banner-image', [FrontendProfileController::class, 'uploadbannerImage']);
+
+
+// Route to search user
+
+
+Route::get('/admin/search-user', [UserController::class, 'search'])->name('admin.search-user');
+// Route::get('/admin/users/{id}/profile', [UserController::class, 'showProfile'])->name('admin.profile');
+Route::get('/profile/{id}', [UserController::class, 'show'])->name('profile.show');
+// web.php
+Route::get('/admin/profile/{id}', [UserController::class, 'show'])->name('admin.show-profile');
+Route::post('/add-friend/{id}', [UserController::class, 'addFriend'])->name('friend.add');
+Route::get('dashboard/admin/profile/{id}', [UserController::class, 'showProfile'])->name('profile.show');
+
+
+// Like Conttroller
+
+Route::get('/dashboard/admin/like/',[LikeController::class,'index']);

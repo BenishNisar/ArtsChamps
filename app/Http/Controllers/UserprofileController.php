@@ -29,12 +29,16 @@ class UserprofileController extends Controller
         $user_id = $req->input('user_id');
         $profile_id = $req->input('profile_id');
 
-        DB::insert('INSERT INTO users_profile (user_id, profile_id) VALUES (?, ?)', [$user_id, $profile_id]);
+
+
+        DB::insert('INSERT INTO users_profile (user_id, profile_id) VALUES (?, ?)', [$user_id, $profile_id,
+     
+    ]);
 
         session()->flash('status', 'Record Inserted');
-
         return redirect('dashboard/admin/userprofile');
     }
+
 
 
 

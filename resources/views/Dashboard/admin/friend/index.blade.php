@@ -64,7 +64,6 @@
                         <div class="tb_search">
                             <div class="input-group">
                                 <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.." class="form-control">
-                                <button class="btn btn-success"><a style="text-decoration: none;" href="{{ url('dashboard/admin/friend/add') }}" class="text-white">Add User</a></button>
                             </div>
                         </div>
                     </div>
