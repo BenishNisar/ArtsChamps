@@ -96,6 +96,8 @@ ORDER BY
         // Validate the request data
          $req->validate([
             'content' => 'required|string|max:255',
+            'price' => 'required|numeric',
+
             'post_img' => 'required|image',
         ]);
 
@@ -117,8 +119,11 @@ ORDER BY
 
         // // Insert the post into the database
         // DB::table('post')->insert($data);
-        Db::insert('insert into post(content,created_at,post_img,user_id) values(?,?,?,?)',[$req->content,now(),
-            $imgpath,$userId]);
+        Db::insert('insert into post(content,created_at,post_img,user_id,price) values(?,?,?,?,?)',[$req->content,now(),
+            $imgpath,$userId,$req->price]
+
+
+        );
 
         return redirect()->route('home')->with('status', 'Post created successfully');
     }

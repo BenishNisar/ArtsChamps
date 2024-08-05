@@ -68,7 +68,7 @@
 
 
 
-
+{{-- form --}}
         <form action="{{ route('admin.search-user') }}" method="GET" class="form-inline ml-auto d-none d-md-block">
             <input type="text" name="search" id="search" placeholder="Search" class="form-control form-control-sm">
             <button type="submit" class="btn btn-primary btn-sm"
@@ -80,7 +80,7 @@
                 <i class="fas fa-search"></i> <!-- Font Awesome search icon -->
             </button>
         </form>
-
+{{-- form --}}
 
 
 

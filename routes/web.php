@@ -42,6 +42,14 @@ Route::get('/gallery', [FrontendGalleryController::class, 'showGallery'])->name(
 // Route::get('/Front_dashboard',[AdminController::class,'dashboardadmin']);
 // Route::get('/users',[UserController::class,'users']);
 
+// follow
+Route::post('/follow/{id}', [FollowController::class, 'follow'])->name('follow');
+Route::delete('/unfollow/{id}', [FollowController::class, 'unfollow'])->name('unfollow');
+// gallery
+Route::get('/gallery', [FollowController::class, 'showGallery'])->name('gallery');
+
+
+
 
 // dashboard routes
 

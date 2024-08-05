@@ -11,10 +11,11 @@ class MessageController extends Controller
     public function index()
     {
         $messages = DB::select('
-            SELECT users.id, users.firstname, message.message_id, message.sender_message,
-            message.created_at, message.message_text
-            FROM message
-            INNER JOIN users ON message.user_id = users.id');
+        SELECT users.id, users.firstname,users.lastname, message.message_id, message.sender_message,
+        message.created_at, message.message_text
+        FROM message
+        INNER JOIN users ON message.user_id = users.id'
+    );
             $profile = DB::select('select * from profile where user_id = ? order by profile_id desc limit 1', [Auth::user()->id]);
 
 
@@ -79,10 +80,18 @@ class MessageController extends Controller
     }
 
 
+
     public function delete($id)
     {
         DB::table('message')->where('message_id', $id)->delete();
         session()->flash('status', 'Record Deleted');
         return redirect('dashboard/admin/messages');
     }
+
+
+
+
+
+
+
 }

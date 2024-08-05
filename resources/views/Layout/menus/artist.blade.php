@@ -34,26 +34,12 @@
         </li>
 
 
-        <li class="nav-item menu-items">
-          <a class="nav-link" href="{{ url('/dashboard/admin/profile/') }}">
-            <span class="menu-icon">
-              <i class="mdi mdi-playlist-play"></i>
-            </span>
-            <span class="menu-title"  style="color: white">Profile</span>
-          </a>
-        </li>
 
 
 
 
-      <li class="nav-item menu-items">
-        <a class="nav-link" style="color: white" href="{{ url('/dashboard/admin/artwork/') }}">
-          <span class="menu-icon">
-            <i class="mdi mdi-playlist-play"></i>
-          </span>
-          <span class="menu-title">Artwork</span>
-        </a>
-      </li>
+
+
       <li class="nav-item menu-items">
         <a class="nav-link" style="color: white" href="{{ url('dashboard/admin/gallery/') }}">
           <span class="menu-icon">
@@ -65,25 +51,23 @@
 
 
 
+
+
       <li class="nav-item menu-items">
-        <a class="nav-link" style="color: white" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <a class="nav-link" style="color: white" href="{{ url('dashboard/admin/billing/') }}">
           <span class="menu-icon">
-            <i class="mdi mdi-security"></i>
+            <i class="mdi mdi-table-large"></i>
           </span>
-          <span class="menu-title">Social Interaction</span>
-          <i class="menu-arrow"></i>
+          <span class="menu-title" style="color: white">Billing</span>
         </a>
-        <div class="collapse" id="auth">
-          <ul class="nav flex-column sub-menu">
-              <li class="nav-item" > <a class="nav-link" style="color: white" href="{{ url('dashboard/admin/messages/') }}"> Message </a></li>
-              <li class="nav-item" > <a class="nav-link" style="color: white" href="{{ url('dashboard/admin/like/') }}">
-                  Like </a></li>
-
-
-
-          </ul>
-        </div>
       </li>
+
+
+
+
+
+
+
 
     </ul>
   </nav>
