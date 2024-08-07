@@ -148,10 +148,12 @@ ORDER BY
 
     function allcomments($id){
 
-        $comments = Db::select('select comment.*,users.profile_img,users.firstname,users.lastname from comment left join users on  users.id = comment.user_id  where post_id = ?',[$id]);
+        $comments = Db::select('select comment.*,users.profile_img,users.firstname,users.lastname from
+        comment left join users on  users.id = comment.user_id  where post_id = ?',[$id]);
 
         return response()->json(['comments' => $comments]);
     }
+
 
 
     // gallery
@@ -176,6 +178,12 @@ ORDER BY
     ]);
 
     return redirect()->back()->with('success', 'Image uploaded successfully.');
+}
+// modalpost
+
+public function show($id) {
+    $post = Post::find($id);
+    return view('Home.welcome', compact('post'));
 }
 
 

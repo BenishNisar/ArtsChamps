@@ -31,6 +31,12 @@ Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('aut
 Route::put('/about/update', [HomeController::class, 'update'])->name('about.update')->middleware('auth');
 Route::post('/gallery/upload', [HomeController::class, 'uploadImage'])->name('gallery.upload');
 Route::get('/gallery', [HomeController::class, 'showGallery'])->name('gallery.show');
+// share message
+Route::post('/share-post-as-message', [MessageController::class, 'sharePostAsMessage']);
+
+
+
+
 
 Route::get('/Home/profile',[FrontendProfileController::class,'index']);
 

@@ -5,70 +5,59 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class FrontendMessageController extends Controller
 {
+    public function index()
+    {
+        $userId = Auth::id();
 
-  // Function to display messages
-        public function index()
-        {
-            $userId = Auth::id();
+        // Get the latest message ID for each conversation
+        $latestMessages = DB::table('message as m')
+            ->select('m.user_id', 'm.message_text', 'm.created_at', 'u.profile_img', 'u.firstname', 'u.lastname')
+            ->join('users as u', 'm.user_id', '=', 'u.id')
+            ->where(function ($query) use ($userId) {
+                $query->where('m.user_id', $userId)
+                      ->orWhere('m.recipient_id', $userId);
+            })
+            ->orderBy('m.created_at', 'desc')
+            ->get()
+            ->groupBy('user_id')
+            ->map(function ($group) {
+                return $group->first(); // Get the most recent message for each user
+            });
 
-            $messages = DB::select('
-                SELECT m.user_id, m.sender_message, m.created_at, m.message_text,
-                       rm.rec_message, rm.user_id AS receiver_id
-                FROM message AS m
-                INNER JOIN receiver_message AS rm ON rm.message_id = m.message_id
-                WHERE m.user_id = ?
-                OR rm.user_id = ?
-            ', [$userId, $userId]);
+        // Format the dates
+        $messages = $latestMessages->map(function ($message) {
+            $message->created_at = Carbon::parse($message->created_at);
+            return $message;
+        });
 
-
-            $messages = collect($messages);
-
-            $users = DB::table('users')->select('id', 'firstname')->get();
-
-            return view('Home.messages', compact('messages', 'users'));
-        }
-
-        // Function to store a new message
-        public function store(Request $request)
-        {
-            // Validate the request
-            $request->validate([
-                'message_text' => 'required|string',
-                'receiver_id' => 'required|integer|exists:users,id',
-            ]);
-
-            // Get the current authenticated user ID
-            $userId = Auth::id();
-
-            // Insert the new message into the message table
-            $messageId = DB::table('message')->insertGetId([
-                'user_id' => $userId,
-                'message_text' => $request->input('message_text'),
-                'sender_message' => $request->input('message_text'),
-                'created_at' => now(),
-            ]);
-
-            // Insert the new message into the receiver_message table
-            DB::table('receiver_message')->insert([
-                'message_id' => $messageId,
-                'user_id' => $request->input('receiver_id'),
-                'rec_message' => $request->input('message_text'),
-            ]);
-
-            return redirect()->route('messages.index');
-            // Return JSON response
-            // return response()->json([
-            //     'message_id' => $messageId,
-            //     'message_text' => $request->input('message_text'),
-            //     'receiver_id' => $request->input('receiver_id'),
-            //     'sender_message' => $request->input('message_text')
-            // ]);
-
-        }
+        return view('Home.messages', compact('messages'));
     }
 
 
+    public function store(Request $request)
+{
+    // Validate the request
+    $request->validate([
+        'message_text' => 'required|string',
+        'receiver_id' => 'required|integer|exists:users,id',
+    ]);
 
+    $userId = Auth::id();
+
+    // Insert the message and get the message ID
+    DB::table('message')->insert([
+        'user_id' => $userId,
+        'recipient_id' => $request->input('receiver_id'),
+        'message_text' => $request->input('message_text'),
+        'sender_message' => $request->input('message_text'), // Add this line
+        'created_at' => now(),
+    ]);
+
+    return redirect()->route('messages.index');
+}
+
+}

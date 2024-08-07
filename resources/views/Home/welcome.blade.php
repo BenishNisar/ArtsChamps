@@ -56,6 +56,12 @@
     margin: 0; /* Remove margin */
 }
 
+    .post-user-image {
+        cursor: pointer; /* Ensures the cursor changes to a pointer */
+    }
+
+
+
 </style>
 
 
@@ -404,6 +410,14 @@
                     </div>
             </div>
 
+
+
+
+
+
+
+
+
         </div>
 <!--------------------------Ends Left columns-->
 
@@ -477,7 +491,31 @@
 
 
 
+{{-- modalllpost --}}
+<!-- Image Modal -->
 
+<div class="modal fade" style="width:100%;height:100vh;background-color:black;" id="imageModal"
+     tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content" style="margin-left:-280px;background:none;">
+            <div class="modal-header" style="border:none; position:relative;">
+                <img src="{{ asset('assets/img/artschamps_profile.png') }}" style="position:absolute;left:1160px;" width="50px" alt="">
+                <button type="button" class="close" style="color:white; position:absolute; left:1200px;
+                font-size:4rem; height: 40px;
+                line-height: 50px; text-align: center; border-radius:5px;" data-dismiss="modal" aria-label="Close">
+                    <span  aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center mt-3">
+                <img style="width:100%; height:490px;" src="" id="modalImage" alt="Enlarged Image" class="img-fluid">
+                <h5 class="price-display" style="color:white; margin-top:20px;">Price: <span class="price-value" id="modalPrice"></span></h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{-- imagemodal --}}
 
 
 @foreach ($posts as $post)
@@ -545,15 +583,22 @@
                                             </div>
                                             <span class="d-block"> {{ \Carbon\Carbon::parse($post->created_at)->format('d M Y, H:i') }} <i class='bx bx-globe ml-3'></i></span>
                                             @if ($post->post_img)
-                                            <img src="{{ asset($post->post_img) }}" alt="Online user" width="400px" height="400px" class="mr-3 post-user-image">
-                                            @endif
+                                <img src="{{ asset($post->post_img) }}" alt="Post Image" width="400px" height="400px" class="mr-3 post-user-image" data-toggle="modal" data-target="#imageModal" data-image="{{ asset($post->post_img) }}" data-id="{{ $post->post_id }}" data-price="{{ $post->price }}">
+                            @endif
+
                                         </div>
                                     </div>
+
+
+
+
+
                                     <div class="mt-3">
                                         <p> {{ $post->content }}</p>
                                         <h5 class="price-display">Price: <span class="price-value">Pkr: {{ $post->price }}</span></h5>
 
                                     </div>
+
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div class="d-flex">
                                             <a href="javascript:void(0)" id="likebtn" data-id="{{ $post->post_id }}" data-lstatus="{{ $post->lstatus }}"  class="post-card-buttons">
@@ -563,46 +608,28 @@
                                                     text-primary
                                                     @endif'
                                                 >&nbsp;Like </i> </a>
-                                            <a href="javascript:void(0)" id="commentbtn" data-id="{{ $post->post_id }}" class="post-card-buttons ml-3">
+                                            <a href="javascript:void(0)" id="commentbtn" data-id="{{ $post->post_id }}"
+                                                 class="post-card-buttons ml-3">
                                                 <i class='bx bx-message-rounded mr-2'></i> Comment</a>
 
-                                            <div class="dropdown dropup share-dropup ml-3">
-                                                <a href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class='bx bx-share-alt mr-2'></i> Share
-                                                </a>
-                                                <div class="dropdown-menu post-dropdown-menu">
-                                                    <a href="#" class="dropdown-item">
-                                                        <div class="row">
-                                                            <div class="col-md-2">
-                                                                <i class='bx bx-share-alt'></i>
-                                                            </div>
-                                                            <div class="col-md-10">
-                                                                <span>Share Now (Public)</span>
-                                                            </div>
-                                                        </div>
+                                                <div class="dropdown dropup share-dropup ml-3">
+                                                    <a href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class='bx bx-share-alt mr-2'></i> Share
                                                     </a>
-                                                    <a href="#" class="dropdown-item">
-                                                        <div class="row">
-                                                            <div class="col-md-2">
-                                                                <i class='bx bx-share-alt'></i>
+                                                    <div class="dropdown-menu post-dropdown-menu">
+                                                        <a href="#" class="dropdown-item" data-post-id="POST_ID" onclick="sharePostAsMessage(this)">
+                                                            <div class="row">
+                                                                <div class="col-md-2">
+                                                                    <i class='bx bx-message'></i>
+                                                                </div>
+                                                                <div class="col-md-10">
+                                                                    <span>Send as Message</span>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-md-10">
-                                                                <span>Share...</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="dropdown-item">
-                                                        <div class="row">
-                                                            <div class="col-md-2">
-                                                                <i class='bx bx-message'></i>
-                                                            </div>
-                                                            <div class="col-md-10">
-                                                                <span>Send as Message</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                            </div>
+
 
 
                                             {{-- billing --}}
@@ -886,6 +913,10 @@
                                                                                 <div class="col-md-12">
                                                                                     <div class="input-group">
                                                                                         <input type="text" class="form-control comment-input" placeholder="Write a comment...">
+                                                                                        <button class="btn search-button" type="submit" id="button-addon2">
+                                                                                            <img src="{{ asset('assets/img/m-send.png') }}" alt="Messenger icon">
+                                                                                        </button>
+
                                                                                         <div class="input-group-btn">
                                                                                             <button type="button" class="btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Emoji"><i class='bx bxs-smiley-happy'></i></button>
                                                                                             <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Attach Image"><i class='bx bx-camera'></i></button>
@@ -911,6 +942,12 @@
                                             </div>
                                         </div>
                                     </div>
+
+
+
+
+
+
                                 </div>
                             </div>
                         </div>
@@ -921,377 +958,9 @@
 
 <hr>
 
-<div class="card-body">
-
-    <div class="container">
-        <div class="posts-section mb-5">
-            <div class="post border-bottom p-3 bg-white w-shadow">
-                <div class="media text-muted pt-3">
-
-                    <div class="media-body pb-3 mb-0 small lh-125">
-                        <div class="d-flex justify-content-between align-items-center w-100">
-                            <a href="#" class="text-gray-dark post-user-name">John Michael</a>
-                            <div class="dropdown">
-                                <a href="#" class="post-more-settings" role="button" data-toggle="dropdown" id="postOptions" aria-haspopup="true" aria-expanded="false">
-                                    <i class='bx bx-dots-horizontal-rounded'></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left post-dropdown-menu" style="width: 300px">
-                                    <a href="#" class="dropdown-item" aria-describedby="savePost">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <i class='bx bx-bookmark-plus post-option-icon'></i>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <span class="fs-9">Save post</span>
-                                                <small id="savePost" class="form-text text-muted">Add this to your saved items</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="dropdown-item" aria-describedby="hidePost">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <i class='bx bx-hide post-option-icon'></i>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <span class="fs-9">Hide post</span>
-                                                <small id="hidePost" class="form-text text-muted">See fewer posts like this</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="dropdown-item" aria-describedby="snoozePost">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <i class='bx bx-time post-option-icon'></i>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <span class="fs-9">Snooze  for 30 days</span>
-                                                <small id="snoozePost" class="form-text text-muted">Temporarily stop seeing posts</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="dropdown-item" aria-describedby="reportPost">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <i class='bx bx-block post-option-icon'></i>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <span class="fs-9">Report</span>
-                                                <small id="reportPost" class="form-text text-muted">I'm concerned about this post</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <span class="d-block">3 hours ago <i class='bx bx-globe ml-3'></i></span>
-                        <img src="{{asset('assets/users/user-1.jpg')}}" alt="Online user" width="400px" height="400px" class="mr-3 post-user-image">
-                    </div>
-                </div>
-                <div class="mt-3">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis voluptatem veritatis harum, tenetur, quibusdam voluptatum, incidunt saepe minus maiores ea atque sequi illo veniam sint quaerat corporis totam et. Culpa?</p>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div class="d-flex">
-                        <a href="javascript:void(0)" class="post-card-buttons"><i class='bx bxs-like mr-2'></i> Like</a>
-                        <a href="javascript:void(0)" class="post-card-buttons ml-3"><i class='bx bx-message-rounded mr-2'></i> Comment</a>
-                        <div class="dropdown dropup share-dropup ml-3">
-                            <a href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class='bx bx-share-alt mr-2'></i> Share
-                            </a>
-                            <div class="dropdown-menu post-dropdown-menu">
-                                <a href="#" class="dropdown-item">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <i class='bx bx-share-alt'></i>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <span>Share Now (Public)</span>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <i class='bx bx-share-alt'></i>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <span>Share...</span>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <i class='bx bx-message'></i>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <span>Send as Message</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="dropdown dropup billing-dropup ml-3">
-                            <a href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class='bx bx-money mr-2'></i> Billing
-                            </a>
-                            <div class="dropdown-menu post-dropdown-menu">
-                                <a href="#" class="dropdown-item">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <i class='bx bx-dollar'></i>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <span>Buy Art</span>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <i class='bx bx-money'></i>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <span>Billing Details</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="border-top pt-3 hide-comments" style="display: none;">
-                    <div class="row bootstrap snippets">
-                        <div class="col-md-12">
-                            <div class="comment-wrapper">
-                                <div class="panel panel-info">
-                                    <div class="panel-body">
-                                        <ul class="media-list comments-list">
-                                            <li class="media comment-form">
-                                                <a href="#" class="pull-left">
-                                                    <img src="assets/images/users/user-4.jpg" alt="" class="img-circle">
-                                                </a>
-                                                <div class="media-body">
-                                                    <form action="" method="" role="form">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="input-group">
-                                                                    <input type="text" class="form-control comment-input" placeholder="Write a comment...">
-                                                                    <div class="input-group-btn">
-                                                                        <button type="button" class="btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Emoji"><i class='bx bxs-smiley-happy'></i></button>
-                                                                        <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Attach Image"><i class='bx bx-camera'></i></button>
-                                                                        <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Record Audio"><i class='bx bx-microphone'></i></button>
-                                                                        <button type="button" class="btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Attach File"><i class='bx bx-file-blank'></i></button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </li>
-                                            <!-- Additional comments can be added here -->
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
 
-
-
-</div>
-<hr>
-
-<div class="card-body">
-    <div class="container">
-        <div class="posts-section mb-5">
-            <div class="post border-bottom p-3 bg-white w-shadow">
-                <div class="media text-muted pt-3">
-
-                    <div class="media-body pb-3 mb-0 small lh-125">
-                        <div class="d-flex justify-content-between align-items-center w-100">
-                            <a href="#" class="text-gray-dark post-user-name">John Michael</a>
-                            <div class="dropdown">
-                                <a href="#" class="post-more-settings" role="button" data-toggle="dropdown" id="postOptions" aria-haspopup="true" aria-expanded="false">
-                                    <i class='bx bx-dots-horizontal-rounded'></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left post-dropdown-menu" style="width: 300px">
-                                    <a href="#" class="dropdown-item" aria-describedby="savePost">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <i class='bx bx-bookmark-plus post-option-icon'></i>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <span class="fs-9">Save post</span>
-                                                <small id="savePost" class="form-text text-muted">Add this to your saved items</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="dropdown-item" aria-describedby="hidePost">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <i class='bx bx-hide post-option-icon'></i>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <span class="fs-9">Hide post</span>
-                                                <small id="hidePost" class="form-text text-muted">See fewer posts like this</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="dropdown-item" aria-describedby="snoozePost">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <i class='bx bx-time post-option-icon'></i>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <span class="fs-9">Snooze  for 30 days</span>
-                                                <small id="snoozePost" class="form-text text-muted">Temporarily stop seeing posts</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="dropdown-item" aria-describedby="reportPost">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <i class='bx bx-block post-option-icon'></i>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <span class="fs-9">Report</span>
-                                                <small id="reportPost" class="form-text text-muted">I'm concerned about this post</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <span class="d-block">3 hours ago <i class='bx bx-globe ml-3'></i></span>
-                        <img src="{{asset('assets/users/user-1.jpg')}}" alt="Online user" width="400px" height="400px" class="mr-3 post-user-image">
-                    </div>
-                </div>
-                <div class="mt-3">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis voluptatem veritatis harum, tenetur, quibusdam voluptatum, incidunt saepe minus maiores ea atque sequi illo veniam sint quaerat corporis totam et. Culpa?</p>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div class="d-flex">
-                        <a href="javascript:void(0)" class="post-card-buttons"><i class='bx bxs-like mr-2'></i> Like</a>
-                        <a href="javascript:void(0)" class="post-card-buttons ml-3"><i class='bx bx-message-rounded mr-2'></i> Comment</a>
-                        <div class="dropdown dropup share-dropup ml-3">
-                            <a href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class='bx bx-share-alt mr-2'></i> Share
-                            </a>
-                            <div class="dropdown-menu post-dropdown-menu">
-                                <a href="#" class="dropdown-item">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <i class='bx bx-share-alt'></i>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <span>Share Now (Public)</span>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <i class='bx bx-share-alt'></i>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <span>Share...</span>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <i class='bx bx-message'></i>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <span>Send as Message</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="dropdown dropup billing-dropup ml-3">
-                            <a href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class='bx bx-money mr-2'></i> Billing
-                            </a>
-                            <div class="dropdown-menu post-dropdown-menu">
-                                <a href="#" class="dropdown-item">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <i class='bx bx-dollar'></i>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <span>Buy Art</span>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <i class='bx bx-money'></i>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <span>Billing Details</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="border-top pt-3 hide-comments" style="display: none;">
-                    <div class="row bootstrap snippets">
-                        <div class="col-md-12">
-                            <div class="comment-wrapper">
-                                <div class="panel panel-info">
-                                    <div class="panel-body">
-                                        <ul class="media-list comments-list">
-                                            <li class="media comment-form">
-                                                <a href="#" class="pull-left">
-                                                    <img src="assets/images/users/user-4.jpg" alt="" class="img-circle">
-                                                </a>
-                                                <div class="media-body">
-                                                    <form action="" method="" role="form">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="input-group">
-                                                                    <input type="text" class="form-control comment-input" placeholder="Write a comment...">
-                                                                    <div class="input-group-btn">
-                                                                        <button type="button" class="btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Emoji"><i class='bx bxs-smiley-happy'></i></button>
-                                                                        <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Attach Image"><i class='bx bx-camera'></i></button>
-                                                                        <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Record Audio"><i class='bx bx-microphone'></i></button>
-                                                                        <button type="button" class="btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Attach File"><i class='bx bx-file-blank'></i></button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </li>
-                                            <!-- Additional comments can be added here -->
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-</div>
 
 
 
@@ -1422,7 +1091,7 @@
 
 
 <script>
-
+// like
     $(document).ready(function(){
 
         $('#likebtn').click(function(){
@@ -1454,7 +1123,7 @@
 
         });
 
-
+// comment
         $('#commentbtn').click(function(){
 
     let postid  = $(this).data('id');
@@ -1506,7 +1175,7 @@
 
 
     });
-
+// billing forms
 
     document.getElementById('continueButton').addEventListener('click', function() {
         if (document.getElementById('firstForm').style.display !== 'none') {
@@ -1538,7 +1207,65 @@
 
 
 
+// share ajax
+function sharePostAsMessage(element) {
+    var postId = element.getAttribute('data-post-id');
+    var recipientId = prompt("Enter the recipient's ID:");
+
+    if (recipientId) {
+        $.ajax({
+            url: '/share-post-as-message',
+            type: 'POST',
+            data: {
+                post_id: postId,
+                recipient_id: recipientId,
+                _token: '{{ csrf_token() }}' // Laravel CSRF token for security
+            },
+            success: function(response) {
+                alert('Post shared successfully as a message!');
+            },
+            error: function(xhr) {
+                alert('An error occurred while sharing the post.');
+            }
+        });
+    }
+}
+
+
+
+
 </script>
+{{-- modalpost--}}
+
+
+<script>
+    $(document).ready(function() {
+        $('#imageModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var imageSrc = button.data('image'); // Extract info from data-* attributes
+            var postId = button.data('id'); // Extract post ID
+            var price = button.data('price'); // Extract price, if needed
+
+            // Update the modal's content.
+            var modal = $(this);
+            modal.find('#modalImage').attr('src', imageSrc);
+            modal.find('#modalPrice').text('Pkr' + price);
+            modal.find('#modalPostId').text(postId); // Set post ID
+
+            // Update the URL with the post ID
+            var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?post_id=' + postId;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+        });
+
+        $('#imageModal').on('hide.bs.modal', function () {
+            // Remove post ID from URL when the modal is closed
+            var originalUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.pushState({ path: originalUrl }, '', originalUrl);
+        });
+    });
+</script>
+
+
 
  <script src="{{url('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js')}}"></script>
 
