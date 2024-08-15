@@ -236,6 +236,7 @@ Route::post('/upload-banner-image', [FrontendProfileController::class, 'uploadba
 
 Route::get('/admin/search-user', [UserController::class, 'search'])->name('admin.search-user');
 // Route::get('/admin/users/{id}/profile', [UserController::class, 'showProfile'])->name('admin.profile');
+
 Route::get('/profile/{id}', [UserController::class, 'show'])->name('profile.show');
 // web.php
 Route::get('/admin/profile/{id}', [UserController::class, 'show'])->name('admin.show-profile');
@@ -246,3 +247,12 @@ Route::get('dashboard/admin/profile/{id}', [UserController::class, 'showProfile'
 // Like Conttroller
 
 Route::get('/dashboard/admin/like/',[LikeController::class,'index']);
+
+
+
+// Billing
+Route::post('/save-billing', [HomeController::class, 'saveBilling'])->name('save.billing');
+Route::post('/first-form-submit', [HomeController::class, 'firstFormSubmit'])->name('first.form.submit');
+Route::post('/finalize-billing', [HomeController::class, 'finalizeBilling'])->name('finalize.billing');
+
+

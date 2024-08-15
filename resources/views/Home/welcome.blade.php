@@ -356,60 +356,63 @@
 
 
 
-                <div class="card shadow-sm card-left3 mb-4">
+<div class="card shadow-sm card-left3 mb-4" style="height:auto;">
 
-                    <div class="card-body">
+    <div class="card-body">
 
 
-                                <div class="card-title d-flex justify-content-between">
-                                    <h5>Photos</h5>
-                                        <!-- Add link to trigger modal -->
-                                        <a href="#"  data-toggle="modal" data-target="#uploadModal" class="btn btn-sm text-end"
-                                        style="color: #007acc;">Add Gallery</a>
-                                </div>
+                <div class="card-title d-flex justify-content-between">
+                    <h5>Photos</h5>
+                        <!-- Add link to trigger modal -->
+                        <a href="#"  data-toggle="modal" data-target="#uploadModal" class="btn btn-sm text-end"  style="color: #007acc;">Add Gallery</a>
+                </div>
 
-                                <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="uploadModalLabel">Upload Image</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="{{ route('gallery.upload') }}" method="POST" enctype="multipart/form-data">
-                                                    @csrf
-                                                    <div class="form-group">
-                                                        <label for="gallery_img">Select Image</label>
-                                                        <input type="file" class="form-control-file" id="gallery_img" name="gallery_img" required>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary">Upload</button>
-                                                </form>
-                                            </div>
-                                        </div>
+                <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="uploadModalLabel">Upload Image</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('gallery.upload') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="gallery_img">Select Gallery Image</label>
+                                        <input type="file" class="form-control-file border rounded p-2" id="gallery_img" name="gallery_img" required>
+                                        <small class="form-text text-muted">Supported formats: JPEG, PNG, JPG, GIF. Max size: 2MB.</small>
                                     </div>
-                                </div>
-
-                                <!-- Gallery Images -->
-
+                                    <button type="submit" class="btn btn-primary btn-block mt-3">Upload Image</button>
+                                </form>
 
 
 
-                                <div class="row" id="gallery">
-                                    @foreach ($gallery as $image)
-                                        <div class="col-6 p-1">
-                                            <a href="{{ asset('assets/gallery/' . $image->gallery_img) }}" data-lightbox="gallery">
-                                                <img src="{{ asset('assets/gallery/' . $image->gallery_img) }}" alt="img" class="img-fluid my-2">
-                                            </a>
-                                        </div>
-                                    @endforeach
-                                </div>
-
+                            </div>
                         </div>
                     </div>
-            </div>
+                </div>
 
+                <!-- Gallery Images -->
+
+
+
+
+                <div class="row" id="gallery">
+                    @foreach ($gallery as $image)
+                    <div class="col-6 p-1">
+                        <a href="{{ asset($image->gallery_img) }}" data-lightbox="gallery">
+                            <img src="{{ asset($image->gallery_img) }}" alt="img" class="img-fluid my-2">
+                        </a>
+                    </div>
+                @endforeach
+
+                </div>
+
+        </div>
+    </div>
+</div>
 
 
 
@@ -491,31 +494,49 @@
 
 
 
-{{-- modalllpost --}}
-<!-- Image Modal -->
 
+<!-- Image Modal -->
 <div class="modal fade" style="width:100%;height:100vh;background-color:black;" id="imageModal"
      tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content" style="margin-left:-280px;background:none;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 90%;" role="document">
+            <div class="modal-content" style="background-color:black; width: 100%;">
             <div class="modal-header" style="border:none; position:relative;">
-                <img src="{{ asset('assets/img/artschamps_profile.png') }}" style="position:absolute;left:1160px;" width="50px" alt="">
-                <button type="button" class="close" style="color:white; position:absolute; left:1200px;
-                font-size:4rem; height: 40px;
-                line-height: 50px; text-align: center; border-radius:5px;" data-dismiss="modal" aria-label="Close">
-                    <span  aria-hidden="true">&times;</span>
+                <img src="{{ asset('assets/img/artschamps_profile.png') }}" style="position:absolute;left:-70px;" width="50px" alt="">
+                <button type="button" class="close" style="color:white; position:absolute; left:-40px;
+                font-size:4rem; height: 40px; line-height: 50px; text-align: center; background: transparent;
+                 border:none; border-radius:5px;" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body text-center mt-3">
-                <img style="width:100%; height:490px;" src="" id="modalImage" alt="Enlarged Image" class="img-fluid">
-                <h5 class="price-display" style="color:white; margin-top:20px;">Price: <span class="price-value" id="modalPrice"></span></h5>
+            <div class="modal-body" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 0;">
+                <!-- Image Section -->
+                <div class="col-md-6" style="padding: 20px; min-height: 800px;">
+                    <img style="width:100%; height:500px;" src="" id="modalImage" alt="Enlarged Image" class="img-fluid">
+                    <h5 class="price-display" style="color:white; margin-top:20px;">Price: <span class="price-value" id="modalPrice"></span></h5>
+                </div>
+
+                <!-- Chat/Comment Section -->
+                <div class="col-md-6" style="padding: 20px; background-color: #fff; border-radius: 10px;margin-left:100px;
+                 min-height: 600px;max-width:30%;  overflow-y: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+                    <h6 style="color:black;">Comments:</h6>
+                    <div id="chatMessages" style="max-height: calc(100% - 80px); overflow-y: auto;
+                     border: 1px solid #ccc; padding: 10px; border-radius: 10px; background:#f9f9f9;">
+                        <!-- Chat messages will be appended here -->
+                    </div>
+                    <form id="chatForm" style="margin-top:10px;position:fixed;bottom:12px;width:300px;">
+                        <div class="form-group">
+                            <textarea id="chatMessage" class="form-control" rows="3" placeholder="Type your message here..." style="border-radius:10px;"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="border-radius:10px; background:purple; border:none;">
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-
-{{-- imagemodal --}}
 
 
 @foreach ($posts as $post)
@@ -583,8 +604,8 @@
                                             </div>
                                             <span class="d-block"> {{ \Carbon\Carbon::parse($post->created_at)->format('d M Y, H:i') }} <i class='bx bx-globe ml-3'></i></span>
                                             @if ($post->post_img)
-                                <img src="{{ asset($post->post_img) }}" alt="Post Image" width="400px" height="400px" class="mr-3 post-user-image" data-toggle="modal" data-target="#imageModal" data-image="{{ asset($post->post_img) }}" data-id="{{ $post->post_id }}" data-price="{{ $post->price }}">
-                            @endif
+                                            <img src="{{ asset($post->post_img) }}" alt="Post Image" width="400px" height="400px" class="mr-3 post-user-image" data-toggle="modal" data-target="#imageModal" data-image="{{ asset($post->post_img) }}" data-id="{{ $post->post_id }}" data-price="{{ $post->price }}">
+                                        @endif
 
                                         </div>
                                     </div>
@@ -608,16 +629,16 @@
                                                     text-primary
                                                     @endif'
                                                 >&nbsp;Like </i> </a>
-                                            <a href="javascript:void(0)" id="commentbtn" data-id="{{ $post->post_id }}"
+                                            <a style="text-decoration: none;" href="javascript:void(0)" id="commentbtn" data-id="{{ $post->post_id }}"
                                                  class="post-card-buttons ml-3">
                                                 <i class='bx bx-message-rounded mr-2'></i> Comment</a>
 
                                                 <div class="dropdown dropup share-dropup ml-3">
-                                                    <a href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <a style="text-decoration: none;" href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <i class='bx bx-share-alt mr-2'></i> Share
                                                     </a>
                                                     <div class="dropdown-menu post-dropdown-menu">
-                                                        <a href="#" class="dropdown-item" data-post-id="POST_ID" onclick="sharePostAsMessage(this)">
+                                                        <a style="text-decoration: none;" href="#" class="dropdown-item" data-post-id="POST_ID" onclick="sharePostAsMessage(this)">
                                                             <div class="row">
                                                                 <div class="col-md-2">
                                                                     <i class='bx bx-message'></i>
@@ -634,12 +655,12 @@
 
                                             {{-- billing --}}
                                             <div class="dropdown dropup billing-dropup ml-3">
-                                                <a href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <a style="text-decoration: none;" href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i class='bx bx-money mr-2'></i> Billing
                                                 </a>
 
                                                 <div class="dropdown-menu post-dropdown-menu">
-                                                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#buyArtModal">
+                                                    <a style="text-decoration: none;" href="#" class="dropdown-item" data-toggle="modal" data-target="#buyArtModal">
                                                         <div class="row">
                                                             <div class="col-md-2">
                                                                 <i class='bx bx-dollar'></i>
@@ -665,6 +686,7 @@
                                             <!-- Buy Art Modal Structure -->
 <!-- Billing Details Modal Structure -->
 <div class="modal fade" id="billingDetailsModal" tabindex="-1" role="dialog" aria-labelledby="billingDetailsModalLabel" aria-hidden="true">
+
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header d-flex align-items-center">
@@ -680,9 +702,11 @@
                 </button>
             </div>
             <div class="modal-body">
+
                 <!-- First Form -->
                 <div id="firstForm">
-                    <form>
+                    <form  action="{{ route('first.form.submit') }}" method="POST">
+                        @csrf
                         <div class="row">
 
 
@@ -705,51 +729,46 @@
 
                 <!-- Second Form -->
                 <div id="secondForm" style="display: none;">
-                    <form>
+                    <form action="{{ route('save.billing') }}" method="POST">
+                        @csrf
                         <div class="row">
 
                             <div class="form-group col-md-6">
                                 <label for="billingFirstName">First Name</label>
-                                <input type="text" class="form-control" id="billingFirstName" placeholder="Enter your last name">
+                                <input type="text" name="firstname" class="form-control" id="billingFirstName" placeholder="Enter your last name">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="billingLastName">Last Name</label>
-                                <input type="text" class="form-control" id="billingLastName" placeholder="Enter your last name">
+                                <input type="text" name="lastname" class="form-control" id="billingLastName" placeholder="Enter your last name">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="billingCardNumber">Card Number <span class="text-danger">*</span></label>
                                 <div class="input-wrapper">
-                                    <input type="number" class="form-control" id="billingCardNumber" placeholder="Enter your card number">
+                                    <input type="number" name="card_number" class="form-control" id="billingCardNumber"
+                                    placeholder="Enter your card number">
                                     <div id="asterisksContainer"></div>
                                 </div>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="billingExpiry">Expiry Date</label>
-                                <input type="date" class="form-control" id="billingExpiry" placeholder="MM/YY">
+                                <input type="date" name="expiry_date" class="form-control" id="billingExpiry" placeholder="MM/YY">
                             </div>
                          <div class="form-group col-md-2">
                                 <label for="billingCVV">CVV</label>
-                                <input type="text" class="form-control" id="billingCVV" placeholder="123">
+                                <input type="text" name="cvv" class="form-control" id="billingCVV" placeholder="123">
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="thirdFirstName">First Name</label>
-                                <input type="text" class="form-control" id="thirdFirstName" placeholder="Enter your first name">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="thirdLastName">Last Name</label>
-                                <input type="text" class="form-control" id="thirdLastName" placeholder="Enter your last name">
-                            </div>
+
                             <div class="form-group col-md-6">
                                 <label for="thirdEmail">Email Address</label>
-                                <input type="email" class="form-control" id="thirdEmail" placeholder="Enter your email">
+                                <input type="email" name="email" class="form-control" id="thirdEmail" placeholder="Enter your email">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="thirdPhone">Phone Number</label>
-                                <input type="number" class="form-control" id="thirdPhone" placeholder="Enter your phone number">
+                                <input type="number" name="phone" class="form-control" id="thirdPhone" placeholder="Enter your phone number">
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="thirdCountry">Country</label>
-                                <select id="thirdCountry" class="form-control">
+                                <select name="country" id="thirdCountry" class="form-control">
                                     <option value="" selected>Select your country</option>
                                     <option value="us">United States</option>
                                     <option value="ca">Canada</option>
@@ -760,7 +779,7 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="thirdState">State/Province</label>
-                                <select id="thirdState" class="form-control">
+                                <select id="thirdState" name="state" class="form-control">
                                     <option value="" selected>Select your state</option>
                                     <option value="sindhi">Sindhi</option>
                                     <option value="us">United States</option>
@@ -769,15 +788,15 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="thirdPostalCode">Postal Code</label>
-                                <input type="text" class="form-control" id="thirdPostalCode" placeholder="Enter your postal code">
+                                <input type="text" name="postal_code" class="form-control" id="thirdPostalCode" placeholder="Enter your postal code">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="thirdAddress">Address</label>
-                                <input type="text" class="form-control" id="thirdAddress" placeholder="Enter your address">
+                                <input type="text" name="address" class="form-control" id="thirdAddress" placeholder="Enter your address">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="thirdCity">City</label>
-                                <input type="text" class="form-control" id="thirdCity" placeholder="Enter your city">
+                                <input type="text" name="city" class="form-control" id="thirdCity" placeholder="Enter your city">
                             </div>
                         </div>
                     </form>
@@ -785,7 +804,8 @@
 
                 <!-- Third Form -->
                 <div id="thirdForm" style="display: none;">
-                    <form>
+                    <form  action="{{ route('finalize.billing') }}" method="POST">
+                        @csrf
                         <div class="row">
                             <p class="modal-title" id="billingDetailsModalLabel"> Select Payment Method </p>
 
@@ -868,13 +888,22 @@
     </a>
 </div>
 
+<p><strong> <b>SubTotal : </b>  </strong></p>
+<p><strong><b>Total :</b></strong></p>
 
 
-<h6>Subtotal <strong>Rs:</strong> </h6>
-<h6>Total <strong>Rs:</strong> </h6>
+
+
+
                         </div>
+                        <button type="submit" name="submit" class="btn btn-success">Submit</button>
+
                     </form>
                 </div>
+
+
+
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="previousButton"
@@ -890,12 +919,10 @@
 
 {{-- billing --}}
 
+</div>
+</div>
 
-
-                                        </div>
-                                    </div>
-
-
+{{-- comment --}}
                                     <div class="border-top pt-3 hide-comments" id="commentsesction" style="display: none;">
                                         <div class="row bootstrap snippets">
                                             <div class="col-md-12">
@@ -945,7 +972,7 @@
 
 
 
-
+{{-- comment --}}
 
 
                                 </div>
@@ -1175,7 +1202,8 @@
 
 
     });
-// billing forms
+
+    // billing forms start
 
     document.getElementById('continueButton').addEventListener('click', function() {
         if (document.getElementById('firstForm').style.display !== 'none') {
@@ -1203,8 +1231,8 @@
 
 
 
-    // image
 
+// billing form end
 
 
 // share ajax
@@ -1241,29 +1269,38 @@ function sharePostAsMessage(element) {
 <script>
     $(document).ready(function() {
         $('#imageModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var imageSrc = button.data('image'); // Extract info from data-* attributes
-            var postId = button.data('id'); // Extract post ID
-            var price = button.data('price'); // Extract price, if needed
+            var button = $(event.relatedTarget);
+            var imageSrc = button.data('image');
+            var postId = button.data('id');
+            var price = button.data('price');
 
-            // Update the modal's content.
             var modal = $(this);
             modal.find('#modalImage').attr('src', imageSrc);
-            modal.find('#modalPrice').text('Pkr' + price);
-            modal.find('#modalPostId').text(postId); // Set post ID
+            modal.find('#modalPrice').text('Pkr ' + price);
 
-            // Update the URL with the post ID
+            // Update the URL with the post_id
             var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?post_id=' + postId;
-            window.history.pushState({ path: newUrl }, '', newUrl);
+            window.history.pushState({path:newUrl}, '', newUrl);
+
+            // Initialize chat or load existing comments here if needed
         });
 
         $('#imageModal').on('hide.bs.modal', function () {
-            // Remove post ID from URL when the modal is closed
-            var originalUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-            window.history.pushState({ path: originalUrl }, '', originalUrl);
+            // Remove the post_id from the URL when the modal is closed
+            var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.pushState({path:newUrl}, '', newUrl);
+        });
+
+        $('#chatForm').on('submit', function(e) {
+            e.preventDefault();
+            var message = $('#chatMessage').val();
+            if (message.trim() !== '') {
+                $('#chatMessages').append('<div class="chat-message" style="padding:5px; margin-bottom:5px; background:#333; border-radius:5px; color:white;">' + message + '</div>');
+                $('#chatMessage').val(''); // Clear input field
+            }
         });
     });
-</script>
+    </script>
 
 
 

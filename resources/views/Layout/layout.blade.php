@@ -67,20 +67,23 @@
         </ul>
 
 
-
 {{-- form --}}
-        <form action="{{ route('admin.search-user') }}" method="GET" class="form-inline ml-auto d-none d-md-block">
-            <input type="text" name="search" id="search" placeholder="Search" class="form-control form-control-sm">
+<form action="{{ route('admin.search-user') }}" method="GET" class="form-inline ml-auto d-none d-md-block">
+    <div class="input-group">
+        <input type="text" name="search" id="search" placeholder="Search"
+               class="form-control form-control-sm"
+               style="border-radius: 20px 0 0 20px; border-right: none;">
+
+        <div class="input-group-append">
             <button type="submit" class="btn btn-primary btn-sm"
-            style="position: relative;
-            right:10px;
-            background:purple;
-            border-radius:10%;
-            ">
+                    style="background: purple; border-radius: 0 20px 20px 0;">
                 <i class="fas fa-search"></i> <!-- Font Awesome search icon -->
             </button>
-        </form>
+        </div>
+    </div>
+</form>
 {{-- form --}}
+
 
 
 
@@ -92,7 +95,7 @@
                 <img src="{{asset(Auth::user()->profile_img)}}"  alt="" class="rounded-circle" width="32px" height="32px">
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                <a class="dropdown-item " href="{{url('/profile')}}">Profile</a>
+                <a class="dropdown-item " href="{{url('/Home/profile')}}">Profile</a>
                 <a class="dropdown-item" href="{{url('/settings')}}">Settings</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item " href="{{url('/login')}}">Logout</a>
@@ -125,6 +128,8 @@
         offcanvas.show();
     });
 </script>
+
+
 
 </body>
 </html>

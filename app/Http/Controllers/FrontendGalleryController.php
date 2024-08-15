@@ -23,9 +23,6 @@ class FrontendGalleryController extends Controller
 
 
 
-
-
-
         $profile = DB::select('select * from profile where user_id = ? order by profile_id desc limit 1', [Auth::user()->id]);
         // $gallery=DB::select('select users.id,gallery.gallery_img from gallery inner join users on gallery.user_id=users.id');
         $gallery=DB::select('select * from gallery where user_id = ? order by gallery_id desc',[Auth()->user()->id]);
@@ -88,25 +85,29 @@ class FrontendGalleryController extends Controller
 
 
     public function uploadImage(Request $request)
-{
-    $request->validate([
-        'gallery_img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+    {
 
-    $userId = Auth::user()->id;
-    $imageName = time().'.'.$request->gallery_img->extension();
+        $request->validate([
+            'gallery_img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    $request->gallery_img->move(public_path('assets/gallery'), $imageName);
 
-    DB::table('gallery')->insert([
-        'user_id' => $userId,
-        'gallery_img' => $imageName,
-        'created_at' => now(),
+        $imageName = time() . '.' . $request->gallery_img->extension();
+        $request->gallery_img->move(public_path('gallery_images'), $imageName);
+        $imgPath = 'gallery_images/' . $imageName;
 
-    ]);
 
-    return redirect()->back()->with('success', 'Image uploaded successfully.');
-}
+        DB::table('gallery')->insert([
+            'user_id' => Auth::user()->id,
+            'gallery_img' => $imgPath,
+            'created_at' => now(),
+        ]);
+
+        
+        return redirect()->back()->with('success', 'Image uploaded successfully.');
+    }
+
+
 
 
 

@@ -81,7 +81,8 @@
 
                 <tr class="">
                     <td>{{$item->gallery_id }}</td>
-                    <td>{{$item->gallery_img }}</td>
+
+                    <img src="{{ asset($item->gallery_img) }}" alt="Gallery image" width="400px" height="400px" >
                     <td>{{ $item->created_at }}</td>
                     <td>
                         <a href="{{ url('/dashboard/admin/gallery/edit') }}/{{ $item->gallery_id }}" class="btn btn-warning">Edit</a>

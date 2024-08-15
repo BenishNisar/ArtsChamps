@@ -308,21 +308,30 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="uploadModalLabel">Upload Image</h5>
+                                                <h5 class="modal-title" id="uploadModalLabel">Gallery Image</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
+
+
                                             <div class="modal-body">
                                                 <form action="{{ route('gallery.upload') }}" method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     <div class="form-group">
-                                                        <label for="gallery_img">Select Image</label>
-                                                        <input type="file" class="form-control-file" id="gallery_img" name="gallery_img" required>
+                                                        <label for="gallery_img">Select Gallery Image</label>
+                                                        <input type="file" class="form-control-file border rounded p-2" id="gallery_img" name="gallery_img" required>
+                                                        <small class="form-text text-muted">Supported formats: JPEG, PNG, JPG, GIF. Max size: 2MB.</small>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                                    <button type="submit" class="btn btn-primary btn-block mt-3">Upload Image</button>
                                                 </form>
+
+
+
                                             </div>
+
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -334,12 +343,13 @@
 
                                 <div class="row" id="gallery">
                                     @foreach ($gallery as $image)
-                                        <div class="col-6 p-1">
-                                            <a href="{{ asset('assets/gallery/' . $image->gallery_img) }}" data-lightbox="gallery">
-                                                <img src="{{ asset('assets/gallery/' . $image->gallery_img) }}" alt="img" class="img-fluid my-2">
-                                            </a>
-                                        </div>
-                                    @endforeach
+                                    <div class="col-6 p-1">
+                                        <a href="{{ asset($image->gallery_img) }}" data-lightbox="gallery">
+                                            <img src="{{ asset($image->gallery_img) }}" alt="img" class="img-fluid my-2">
+                                        </a>
+                                    </div>
+                                @endforeach
+
                                 </div>
 
                         </div>
@@ -367,7 +377,7 @@
 
 
 
-
+{{-- gallery down --}}
 
                     @foreach ($gallery as $item)
                     <div class="card-body">
@@ -382,12 +392,12 @@
                                             </div>
                                             <div class="gallery mt-3">
                                                 @if ($item->gallery_img)
-                                                <a href="{{ asset('assets/gallery/' . $item->gallery_img) }}" target="_blank">
-                                                    <img src="{{ asset('assets/gallery/' . $item->gallery_img) }}" alt="Gallery image" width="400px" height="400px" class="mr-3 post-user-image">
+                                                <a href="{{ asset($item->gallery_img) }}" target="_blank">
+                                                    <img src="{{ asset($item->gallery_img) }}" alt="Gallery image" width="400px" height="400px" class="mr-3 post-user-image">
                                                 </a>
-                                                <div class="mt-2">
-                                                    <a href="{{ asset('assets/gallery/' . $item->gallery_img) }}" download class="btn btn-primary"><i class='bx bx-download'></i> Download</a>
-                                                </div>
+       <div class="mt-2">
+        <a href="{{ asset($item->gallery_img) }}" download class="btn btn-primary"><i class='bx bx-download'></i> Download</a>
+        </div>
                                                 @endif
                                             </div>
                                         </div>
@@ -396,7 +406,8 @@
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                @endforeach
+
 
 <hr>
 

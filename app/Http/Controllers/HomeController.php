@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Billing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+
 
 class HomeController extends Controller
 {
@@ -26,7 +28,7 @@ class HomeController extends Controller
         // order by post.created_at desc');
 
 
-       $posts=  Db::select('SELECT
+        $posts =  Db::select('SELECT
     p.*,
     l.status as lstatus,
     l.user_id AS liked_by_user_id
@@ -36,10 +38,10 @@ LEFT JOIN
     likes l ON p.post_id = l.post_id AND l.user_id = ?
 ORDER BY
     p.created_at DESC;
-',[Auth::user()->id]);
+', [Auth::user()->id]);
 
 
-          $likes=DB::select('select likes.id,likes.user_id,likes.created_at,likes.post_id,
+        $likes = DB::select('select likes.id,likes.user_id,likes.created_at,likes.post_id,
           post.post_id,post.content,post.created_at,post.post_img,users.id
 
             from likes inner join users on likes.user_id=users.id inner join post
@@ -49,9 +51,9 @@ ORDER BY
 
         $profile = DB::select('select * from profile where user_id = ? order by profile_id desc limit 1', [Auth::user()->id]);
         // $gallery=DB::select('select users.id,gallery.gallery_img from gallery inner join users on gallery.user_id=users.id');
-        $gallery=DB::select('select * from gallery where user_id = ? order by gallery_id desc',[Auth()->user()->id]);
+        $gallery = DB::select('select * from gallery where user_id = ? order by gallery_id desc', [Auth()->user()->id]);
 
-        return view('Home.welcome', compact('about', 'posts','likes','profile','gallery'));
+        return view('Home.welcome', compact('about', 'posts', 'likes', 'profile', 'gallery'));
     }
 
     public function showProfile()
@@ -94,7 +96,7 @@ ORDER BY
         $userId = Auth::user()->id;
 
         // Validate the request data
-         $req->validate([
+        $req->validate([
             'content' => 'required|string|max:255',
             'price' => 'required|numeric',
 
@@ -104,9 +106,9 @@ ORDER BY
         if ($req->hasFile('post_img')) {
 
             $img = $req->file('post_img');
-            $imageName = time(). $img->getClientOriginalName();
-            $img->move('posts/',$imageName);
-            $imgpath = "posts/".$imageName;
+            $imageName = time() . $img->getClientOriginalName();
+            $img->move('posts/', $imageName);
+            $imgpath = "posts/" . $imageName;
             // $imgpath ="storage/app/posts/".$imageName;
 
             // $img->storeAs('posts',$imageName);
@@ -119,8 +121,15 @@ ORDER BY
 
         // // Insert the post into the database
         // DB::table('post')->insert($data);
-        Db::insert('insert into post(content,created_at,post_img,user_id,price) values(?,?,?,?,?)',[$req->content,now(),
-            $imgpath,$userId,$req->price]
+        Db::insert(
+            'insert into post(content,created_at,post_img,user_id,price) values(?,?,?,?,?)',
+            [
+                $req->content,
+                now(),
+                $imgpath,
+                $userId,
+                $req->price
+            ]
 
 
         );
@@ -128,28 +137,32 @@ ORDER BY
         return redirect()->route('home')->with('status', 'Post created successfully');
     }
 
-    function likePost(Request $req){
+    function likePost(Request $req)
+    {
 
-        if($req->lstatus == 1){
+        if ($req->lstatus == 1) {
 
-            Db::update('update likes set status = ? where user_id = ? and  post_id = ?',[0,Auth::user()->id,$req->post_id]);
+            Db::update('update likes set status = ? where user_id = ? and  post_id = ?', [0, Auth::user()->id, $req->post_id]);
 
-            return response()->json(['message' => true,'message' => 'Post DisLiked']);
+            return response()->json(['message' => true, 'message' => 'Post DisLiked']);
+        } else {
+
+
+            Db::insert('insert into likes(post_id,created_at,user_id,status) values(?,?,?,?)', [$req->post_id, now(), Auth()->user()->id, 1]);
+            return response()->json(['success' => true, 'message' => 'Post Liked']);
         }
-        else{
-
-
-            Db::insert('insert into likes(post_id,created_at,user_id,status) values(?,?,?,?)',[$req->post_id,now(),Auth()->user()->id,1]);
-            return response()->json(['success' => true,'message' => 'Post Liked']);
-
-        }
-
     }
 
-    function allcomments($id){
 
-        $comments = Db::select('select comment.*,users.profile_img,users.firstname,users.lastname from
-        comment left join users on  users.id = comment.user_id  where post_id = ?',[$id]);
+    public function allcomments($id)
+    {
+        $comments = DB::select(
+            'SELECT comment.*, users.profile_img, users.firstname, users.lastname
+        FROM comment
+        LEFT JOIN users ON users.id = comment.user_id
+        WHERE comment.post_id = ?',
+            [$id]
+        );
 
         return response()->json(['comments' => $comments]);
     }
@@ -160,31 +173,58 @@ ORDER BY
 
 
     public function uploadImage(Request $request)
-{
-    $request->validate([
-        'gallery_img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+    {
 
-    $userId = Auth::user()->id;
-    $imageName = time().'.'.$request->gallery_img->extension();
+        $request->validate([
+            'gallery_img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    $request->gallery_img->move(public_path('assets/gallery'), $imageName);
 
-    DB::table('gallery')->insert([
-        'user_id' => $userId,
-        'gallery_img' => $imageName,
-        'created_at' => now(),
+        $imageName = time() . '.' . $request->gallery_img->extension();
+        $request->gallery_img->move(public_path('gallery_images'), $imageName);
+        $imgPath = 'gallery_images/' . $imageName;
 
-    ]);
 
-    return redirect()->back()->with('success', 'Image uploaded successfully.');
+        DB::table('gallery')->insert([
+            'user_id' => Auth::user()->id,
+            'gallery_img' => $imgPath,
+            'created_at' => now(),
+        ]);
+
+
+        return redirect()->back()->with('success', 'Image uploaded successfully.');
+    }
+
+    // modalpost
+
+
+    public function show($id)
+    {
+        $post = Post::find($id);
+        return view('Home.welcome', compact('post'));
+    }
+
+
+
+
+
+    public function saveBilling(Request $request)
+    {
+
+
+        DB::select('
+        SELECT users.firstname, users.lastname, users.email, users.phone
+        FROM orders
+        INNER JOIN card_details ON orders.id = card_details.order_id
+        INNER JOIN billing ON billing.order_id = orders.id
+        INNER JOIN users ON users.id = orders.user_id
+        INNER JOIN payment_methods ON orders.payment_method_id = payment_methods.id
+    ');
+
+
+
+
+
+
 }
-// modalpost
-
-public function show($id) {
-    $post = Post::find($id);
-    return view('Home.welcome', compact('post'));
-}
-
-
 }
