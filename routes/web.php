@@ -250,9 +250,10 @@ Route::get('/dashboard/admin/like/',[LikeController::class,'index']);
 
 
 
-// Billing
-Route::post('/save-billing', [HomeController::class, 'saveBilling'])->name('save.billing');
-Route::post('/first-form-submit', [HomeController::class, 'firstFormSubmit'])->name('first.form.submit');
+Route::post('/first-form-submit', [HomeController::class, 'saveFirstForm'])->name('first.form.submit');
+Route::post('/save-billing', [HomeController::class, 'saveSecondForm'])->name('save.billing');
 Route::post('/finalize-billing', [HomeController::class, 'finalizeBilling'])->name('finalize.billing');
+
+
 
 

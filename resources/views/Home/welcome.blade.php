@@ -683,10 +683,11 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Buy Art Modal Structure -->
-<!-- Billing Details Modal Structure -->
-<div class="modal fade" id="billingDetailsModal" tabindex="-1" role="dialog" aria-labelledby="billingDetailsModalLabel" aria-hidden="true">
 
+
+
+                                            <!-- Billing Details Modal Structure -->
+<div class="modal fade" id="billingDetailsModal" tabindex="-1" role="dialog" aria-labelledby="billingDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header d-flex align-items-center">
@@ -705,24 +706,15 @@
 
                 <!-- First Form -->
                 <div id="firstForm">
-                    <form  action="{{ route('first.form.submit') }}" method="POST">
+                    <form id="firstFormContent" action="{{ route('first.form.submit') }}" method="POST">
                         @csrf
                         <div class="row">
-
-
                             @if ($post->post_img)
-                            <img src="{{ asset($post->post_img) }}" alt="Online user" width="400px" height="400px" class="mr-3 post-user-image">
-
-                            <h5 class="price-display">Price: <span class="price-value">Pkr{{ $post->price }}</span></h5>
-
-
+                                <div class="col-md-12">
+                                    <img src="{{ asset($post->post_img) }}" alt="Online user" width="400px" height="400px" class="mr-3 post-user-image">
+                                    <h5 class="price-display">Price: <span class="price-value">Pkr{{ $post->price }}</span></h5>
+                                </div>
                             @endif
-
-
-
-
-
-
                         </div>
                     </form>
                 </div>
@@ -732,43 +724,58 @@
                     <form action="{{ route('save.billing') }}" method="POST">
                         @csrf
                         <div class="row">
-
                             <div class="form-group col-md-6">
-                                <label for="billingFirstName">First Name</label>
-                                <input type="text" name="firstname" class="form-control" id="billingFirstName" placeholder="Enter your last name">
+                                <label for="firstname">First Name</label>
+                                <input type="text" name="firstname" class="form-control" id="billingFirstName" placeholder="Enter your first name">
+                                @error('firstname')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="billingLastName">Last Name</label>
+                                <label for="lastname">Last Name</label>
                                 <input type="text" name="lastname" class="form-control" id="billingLastName" placeholder="Enter your last name">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="billingCardNumber">Card Number <span class="text-danger">*</span></label>
-                                <div class="input-wrapper">
-                                    <input type="number" name="card_number" class="form-control" id="billingCardNumber"
-                                    placeholder="Enter your card number">
-                                    <div id="asterisksContainer"></div>
-                                </div>
+                                @error('lastname')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="billingExpiry">Expiry Date</label>
-                                <input type="date" name="expiry_date" class="form-control" id="billingExpiry" placeholder="MM/YY">
-                            </div>
-                         <div class="form-group col-md-2">
-                                <label for="billingCVV">CVV</label>
-                                <input type="text" name="cvv" class="form-control" id="billingCVV" placeholder="123">
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="thirdEmail">Email Address</label>
-                                <input type="email" name="email" class="form-control" id="thirdEmail" placeholder="Enter your email">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="thirdPhone">Phone Number</label>
-                                <input type="number" name="phone" class="form-control" id="thirdPhone" placeholder="Enter your phone number">
+                                <label for="card_number">Card Number <span class="text-danger">*</span></label>
+                                <input type="number" name="card_number" class="form-control" id="billingCardNumber" placeholder="Enter Your Card No">
+                                @error('card_number')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="thirdCountry">Country</label>
-                                <select name="country" id="thirdCountry" class="form-control">
+                                <label for="expiration_date">Expiration Date</label>
+                                <input type="date" name="expiration_date" class="form-control" id="expiration_date" placeholder="MM/YY">
+                                @error('expiration_date')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="card_holder_name">Card Holder Name</label>
+                                <input type="text" name="card_holder_name" class="form-control" id="card_holder_name" placeholder="Enter Holder Name">
+                                @error('card_holder_name')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email">
+                                @error('email')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="phone">Phone Number</label>
+                                <input type="number" name="phone" class="form-control" id="phone" placeholder="Enter your phone number">
+                                @error('phone')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="Country">Billing Country</label>
+                                <select name="billing_country" id="billingcountry" class="form-control">
                                     <option value="" selected>Select your country</option>
                                     <option value="us">United States</option>
                                     <option value="ca">Canada</option>
@@ -779,24 +786,33 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="thirdState">State/Province</label>
-                                <select id="thirdState" name="state" class="form-control">
+                                <select id="thirdState" name="billing_state" class="form-control">
                                     <option value="" selected>Select your state</option>
-                                    <option value="sindhi">Sindhi</option>
+                                    <option value="sindhi">Sindh</option>
                                     <option value="us">United States</option>
                                     <!-- Add more state options here -->
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="thirdPostalCode">Postal Code</label>
-                                <input type="text" name="postal_code" class="form-control" id="thirdPostalCode" placeholder="Enter your postal code">
+                                <label for="billingzip">Zip Code</label>
+                                <input type="text" name="billing_zip" class="form-control" id="billing_zip" placeholder="Zip code">
+                                @error('billing_zip')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="thirdAddress">Address</label>
-                                <input type="text" name="address" class="form-control" id="thirdAddress" placeholder="Enter your address">
+                                <label for="billing_address">Address</label>
+                                <input type="text" name="billing_address" class="form-control" id="billing_address" placeholder="Enter your address">
+                                @error('billing_address')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="thirdCity">City</label>
-                                <input type="text" name="city" class="form-control" id="thirdCity" placeholder="Enter your city">
+                                <label for="billing_city">City</label>
+                                <input type="text" name="billing_city" class="form-control" id="billing_city" placeholder="Enter your city">
+                                @error('billing_city')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </form>
@@ -804,120 +820,106 @@
 
                 <!-- Third Form -->
                 <div id="thirdForm" style="display: none;">
-                    <form  action="{{ route('finalize.billing') }}" method="POST">
+                    <form action="{{ route('finalize.billing') }}" method="POST">
                         @csrf
                         <div class="row">
-                            <p class="modal-title" id="billingDetailsModalLabel"> Select Payment Method </p>
+                            <p class="modal-title" id="billingDetailsModalLabel">Select Payment Method</p>
+                            <h6>Recommended method(s)</h6>
+                            <div class="form-group">
+                                <label>
+                                    <input type="radio" name="method_name" value="ArtsChamps Wallet">
+                                    <img src="{{ asset('assets/img/artschamps_wallet.png') }}" alt="ArtsChamps Wallet" class="wallet-image">
+                                    <div class="wallet-details">
+                                        <h6>ArtsChamps Wallet</h6>
+                                        <span>Activate & Pay</span>
+                                    </div>
+                                </label>
+                            </div>
 
-<h6>Recommended method(s)</h6>
-<div class="form-group">
-    <a href="#" style="text-decoration: none;" class="wallet-link">
-        <img src="{{ asset('assets/img/artschamps_wallet.png') }}"  alt="ArtsChamps Wallet" class="wallet-image">
-        <div class="wallet-details">
-            <h6>ArtsChamps Wallet</h6>
-            <h6>Activate & Pay</h6>
-            <p class="price">Rs.0</p>
-        </div>
-    </a>
-</div>
+                            <h6>Payment methods</h6>
+                            <div class="form-group">
+                                <label>
+                                    <input type="radio" name="method_name" value="Credit/Debit Card">
+                                    <img src="{{ asset('assets/img/credit_card.png') }}" alt="Credit/Debit Card" class="wallet-image">
+                                    <div class="wallet-details">
+                                        <h6>Credit/Debit Card</h6>
+                                        <span>Credit/Debit Card</span>
+                                    </div>
+                                </label>
+                            </div>
 
+                            <div class="form-group">
+                                <label>
+                                    <input type="radio" name="method_name" value="Jazz Cash">
+                                    <img src="{{ asset('assets/img/jazz_cash.jpg') }}" alt="Jazz Cash" class="wallet-image">
+                                    <div class="wallet-details">
+                                        <h6>Jazz Cash</h6>
+                                    </div>
+                                </label>
+                            </div>
 
-<div class="form-group">
-    <a href="#" style="text-decoration: none;" class="wallet-link">
-        <img src="{{ asset('assets/img/credit_card.png') }}"  alt="ArtsChamps Wallet" class="wallet-image">
-        <div class="wallet-details">
-            <h6>Credit/Debit Card</h6>
-            <h6>Credit/Debit Card</h6>
+                            <div class="form-group">
+                                <label>
+                                    <input type="radio" name="method_name" value="Easy Paisa">
+                                    <img src="{{ asset('assets/img/easypaisa.png') }}" alt="Easy Paisa" class="wallet-image">
+                                    <div class="wallet-details">
+                                        <h6>Easy Paisa</h6>
+                                    </div>
+                                </label>
+                            </div>
 
-        </div>
-    </a>
-</div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="radio" name="method_name" value="Habib Bank Account">
+                                    <img src="{{ asset('assets/img/habib_bank.png') }}" alt="Habib Bank Account" class="wallet-image">
+                                    <div class="wallet-details">
+                                        <h6>Habib Bank Account</h6>
+                                    </div>
+                                </label>
+                            </div>
 
+                            <div class="form-group">
+                                <label>
+                                    <input type="radio" name="method_name" value="Cash on Delivery">
+                                    <img src="{{ asset('assets/img/cash_on_delivery.png') }}" alt="Cash on Delivery" class="wallet-image">
+                                    <div class="wallet-details">
+                                        <h6>Cash on Delivery</h6>
+                                    </div>
+                                </label>
+                            </div>
 
-<div class="form-group">
-    <a href="#" style="text-decoration: none;" class="wallet-link">
-        <img src="{{ asset('assets/img/jazz_cash.jpg') }}"  alt="ArtsChamps Wallet" class="wallet-image">
-        <div class="wallet-details">
-            <h6>Jazz Cash</h6>
-
-
-        </div>
-    </a>
-</div>
-
-{{-- easypaisa --}}
-
-
-<div class="form-group">
-    <a href="#" style="text-decoration: none;" class="wallet-link">
-        <img src="{{ asset('assets/img/easypaisa.png') }}"  alt="ArtsChamps Wallet" class="wallet-image">
-        <div class="wallet-details">
-            <h6>Easypaisa</h6>
-
-
-        </div>
-    </a>
-</div>
-
-
-
-
-<div class="form-group">
-    <a href="#" style="text-decoration: none;" class="wallet-link">
-        <img src="{{ asset('assets/img/habib_bank.png') }}"  alt="ArtsChamps Wallet" class="wallet-image">
-        <div class="wallet-details">
-            <h6>HBL Bank Account</h6>
-
-
-        </div>
-    </a>
-</div>
-
-
-<div class="form-group">
-    <a href="#" style="text-decoration: none;" class="wallet-link">
-        <img src="{{ asset('assets/img/cash_on_delivery.png') }}"  alt="ArtsChamps Wallet" class="wallet-image">
-        <div class="wallet-details">
-            <h6>Cash on Delivery</h6>
-
-
-
-
-
-        </div>
-    </a>
-</div>
-
-<p><strong> <b>SubTotal : </b>  </strong></p>
-<p><strong><b>Total :</b></strong></p>
-
-
-
-
-
+                            <button type="submit" class="btn btn-primary">Proceed</button>
                         </div>
-                        <button type="submit" name="submit" class="btn btn-success">Submit</button>
-
                     </form>
                 </div>
 
 
 
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="previousButton"
-                style="display: none;">Previous</button>
-                <button type="button" class="btn btn-secondary" style="border:1px solid black"
 
-                data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" style="border:1px solid black" id="continueButton">Continue</button>
+
+
+
+
+                {{-- third --}}
+
+            </div>
+
+            <div class="modal-footer">
+                <!-- Navigation Buttons -->
+                <button type="button" id="previousButton" class="btn btn-secondary" style="display:none;">Previous</button>
+                <button type="button" id="continueButton" class="btn btn-primary">Continue</button>
             </div>
         </div>
     </div>
 </div>
 
 {{-- billing --}}
+
+
+
+
+
 
 </div>
 </div>
@@ -1205,29 +1207,75 @@
 
     // billing forms start
 
-    document.getElementById('continueButton').addEventListener('click', function() {
-        if (document.getElementById('firstForm').style.display !== 'none') {
-            document.getElementById('firstForm').style.display = 'none';
-            document.getElementById('secondForm').style.display = 'block';
-            document.getElementById('previousButton').style.display = 'inline-block';
-        } else if (document.getElementById('secondForm').style.display !== 'none') {
-            document.getElementById('secondForm').style.display = 'none';
-            document.getElementById('thirdForm').style.display = 'block';
-            document.getElementById('continueButton').textContent = 'Save Changes';
+    $(document).ready(function() {
+        $('#continueButton').click(function() {
+            if ($('#firstForm').is(':visible')) {
+                $('#firstForm').hide();
+                $('#secondForm').show();
+                $('#previousButton').show();
+                $('#continueButton').text('Next');
+            } else if ($('#secondForm').is(':visible')) {
+                $('#secondForm').hide();
+                $('#thirdForm').show();
+                $('#continueButton').text('Submit');
+            } else if ($('#thirdForm').is(':visible')) {
+                submitForm();
+            }
+        });
+
+        $('#previousButton').click(function() {
+            if ($('#secondForm').is(':visible')) {
+                $('#secondForm').hide();
+                $('#firstForm').show();
+                $('#previousButton').hide();
+                $('#continueButton').text('Continue');
+            } else if ($('#thirdForm').is(':visible')) {
+                $('#thirdForm').hide();
+                $('#secondForm').show();
+                $('#continueButton').text('Next');
+            }
+        });
+
+        function submitForm() {
+            var formData = new FormData();
+            var formId;
+
+            if ($('#firstForm').is(':visible')) {
+                formId = '#firstFormContent';
+            } else if ($('#secondForm').is(':visible')) {
+                formId = '#secondFormContent';
+            } else if ($('#thirdForm').is(':visible')) {
+                formId = '#thirdFormContent';
+            }
+
+            $(formId).find('input, select').each(function() {
+                if ($(this).attr('type') === 'radio' && $(this).is(':checked')) {
+                    formData.append($(this).attr('name'), $(this).val());
+                } else if ($(this).attr('type') !== 'radio') {
+                    formData.append($(this).attr('name'), $(this).val());
+                }
+            });
+
+            $.ajax({
+                url: $(formId).attr('action'),
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log('Success:', response);
+                    $('#billingDetailsModal').modal('hide');
+                },
+                error: function(xhr) {
+                    console.log('Error:', xhr.responseText);
+                }
+            });
         }
     });
 
-    document.getElementById('previousButton').addEventListener('click', function() {
-        if (document.getElementById('secondForm').style.display !== 'none') {
-            document.getElementById('secondForm').style.display = 'none';
-            document.getElementById('firstForm').style.display = 'block';
-            document.getElementById('previousButton').style.display = 'none';
-        } else if (document.getElementById('thirdForm').style.display !== 'none') {
-            document.getElementById('thirdForm').style.display = 'none';
-            document.getElementById('secondForm').style.display = 'block';
-            document.getElementById('continueButton').textContent = 'Continue';
-        }
-    });
+
+
+
 
 
 
