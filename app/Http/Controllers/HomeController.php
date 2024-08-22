@@ -240,12 +240,31 @@ ORDER BY
         return response()->json(['success' => true, 'data' => $billingData]);
     }
 
+    public function submitFirstForm(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'post_id' => 'required',
+            'user_id' => 'required',
+        ]);
+
+
+        $order = Order::create([
+            'post_id' => $validatedData['post_id'],
+            'user_id' => $validatedData['user_id'],
+            'payment_method_id' => null,
+            'order_status' => 'pending',
+            'order_date' => now(),
+        ]);
+
+        return redirect()->route('billing.form')->with('order_id', $order->id);
+    }
 
 
     public function saveSecondForm(Request $request)
     {
-        // Validate the form data
-        $request->validate([
+
+        $validatedData = $request->validate([
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'card_number' => 'required|numeric',
@@ -258,26 +277,15 @@ ORDER BY
             'billing_zip' => 'required|string|max:10',
             'billing_address' => 'required|string|max:255',
             'billing_city' => 'required|string|max:255',
+            'order_id' => 'required|exists:orders,id' // Ensure order_id is included and valid
         ]);
 
         // Save the data to the database
-        BillingDetail::create([
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'card_number' => $request->card_number,
-            'expiration_date' => $request->expiration_date,
-            'card_holder_name' => $request->card_holder_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'billing_country' => $request->billing_country,
-            'billing_state' => $request->billing_state,
-            'billing_zip' => $request->billing_zip,
-            'billing_address' => $request->billing_address,
-            'billing_city' => $request->billing_city,
-        ]);
+        BillingDetail::create($validatedData);
 
         return response()->json(['message' => 'Billing details saved successfully']);
     }
+
 
 
 
@@ -297,6 +305,9 @@ ORDER BY
 
         return redirect()->back()->with('success', 'Payment method saved successfully');
     }
+
+
+
 
 
 }

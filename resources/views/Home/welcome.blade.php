@@ -3,61 +3,67 @@
 @extends('Layout.layout')
 <style>
         #countrySelect {
-        width: 100%; /* Ensure the dropdown uses the full width of its container */
+        width: 100%;
     }
     .price-display {
-            font-size: 1.25rem; /* Larger font size */
-            font-weight: bold;  /* Bold text */
-            color: #333;        /* Dark grey color for better readability */
-            margin-bottom: 1rem; /* Space below the price */
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
         }
 
         .price-value {
-            color: #e74c3c; /* Red color to highlight the price */
-            font-size: 1.5rem; /* Slightly larger font size for emphasis */
-            font-weight: 700; /* Extra bold text */
+            color: #e74c3c;
+            font-size: 1.5rem;
+            font-weight: 700;
         }
         .wallet-link {
-    display: flex; /* Align items in a row */
-    align-items: center; /* Center items vertically */
-    text-decoration: none; /* Remove underline from link */
-    color: #333; /* Default text color */
-    background-color: #fff; /* Background color for the container */
-    border: 1px solid #ddd; /* Border around the container */
-    border-radius: 8px; /* Rounded corners */
-    padding: 10px; /* Padding inside the container */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow effect */
-    transition: background-color 0.3s ease; /* Smooth transition on hover */
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
 }
 
-.wallet-link:hover {
-    background-color: #f5f5f5; /* Change background on hover */
+.payment-method {
+    display: flex;
+    align-items: center;
 }
 
 .wallet-image {
-    width: 50px; /* Set a specific width */
-    height: 50px; /* Set a specific height */
-    margin-right: 10px; /* Space between image and text */
-}
+    width: 40px;
+    height: 40px;
+    margin-right: 25px;
+    margin-left: 15px;
 
-.wallet-details {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
 }
 
 .wallet-details h6 {
-    margin: 0; /* Remove margin */
-    font-size: 1rem; /* Adjust font size */
+    margin: 0;
 }
 
+.wallet-details span {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+
+
 .price {
-    font-size: 1.2rem; /* Slightly larger font size for price */
-    color: #e74c3c; /* Red color for emphasis */
-    margin: 0; /* Remove margin */
+    font-size: 1.2rem;
+    color: #e74c3c;
+    margin: 0;
 }
 
     .post-user-image {
-        cursor: pointer; /* Ensures the cursor changes to a pointer */
+        cursor: pointer;
     }
 
 
@@ -629,7 +635,8 @@
                                                     text-primary
                                                     @endif'
                                                 >&nbsp;Like </i> </a>
-                                            <a style="text-decoration: none;" href="javascript:void(0)" id="commentbtn" data-id="{{ $post->post_id }}"
+                                            <a style="text-decoration: none;" href="javascript:void(0)"
+                                             class="commentbtn" data-id="{{ $post->post_id }}"
                                                  class="post-card-buttons ml-3">
                                                 <i class='bx bx-message-rounded mr-2'></i> Comment</a>
 
@@ -704,20 +711,24 @@
             </div>
             <div class="modal-body">
 
-                <!-- First Form -->
-                <div id="firstForm">
-                    <form id="firstFormContent" action="{{ route('first.form.submit') }}" method="POST">
-                        @csrf
-                        <div class="row">
-                            @if ($post->post_img)
-                                <div class="col-md-12">
-                                    <img src="{{ asset($post->post_img) }}" alt="Online user" width="400px" height="400px" class="mr-3 post-user-image">
-                                    <h5 class="price-display">Price: <span class="price-value">Pkr{{ $post->price }}</span></h5>
-                                </div>
-                            @endif
-                        </div>
-                    </form>
+       <!-- First Form -->
+<div id="firstForm">
+    <form id="firstFormContent" action="{{ route('first.form.submit') }}" method="POST">
+        @csrf
+        <div class="row">
+            @if ($post->post_img)
+                <div class="col-md-12">
+                    <img src="{{ asset($post->post_img) }}" alt="Online user" width="400px" height="400px" class="mr-3 post-user-image">
+                    <h5 class="price-display">Price: <span class="price-value">Pkr{{ $post->price }}</span></h5>
                 </div>
+            @endif
+            {{-- <input type="hidden" name="post_id" value="{{ $post->id }}">
+            <input type="hidden" name="user_id" value="{{ auth()->id() }}"> --}}
+        </div>
+    </form>
+</div>
+
+                {{-- first --}}
 
                 <!-- Second Form -->
                 <div id="secondForm" style="display: none;">
@@ -818,90 +829,85 @@
                     </form>
                 </div>
 
-                <!-- Third Form -->
-                <div id="thirdForm" style="display: none;">
-                    <form action="{{ route('finalize.billing') }}" method="POST">
-                        @csrf
-                        <div class="row">
-                            <p class="modal-title" id="billingDetailsModalLabel">Select Payment Method</p>
-                            <h6>Recommended method(s)</h6>
-                            <div class="form-group">
-                                <label>
-                                    <input type="radio" name="method_name" value="ArtsChamps Wallet">
-                                    <img src="{{ asset('assets/img/artschamps_wallet.png') }}" alt="ArtsChamps Wallet" class="wallet-image">
-                                    <div class="wallet-details">
-                                        <h6>ArtsChamps Wallet</h6>
-                                        <span>Activate & Pay</span>
-                                    </div>
-                                </label>
-                            </div>
+          <!-- Third Form -->
+<div id="thirdForm" style="display: none;">
+    <form action="{{ route('finalize.billing') }}" method="POST">
+        @csrf
+        <div class="row">
+            <p class="modal-title" id="billingDetailsModalLabel">Select Payment Method</p>
 
-                            <h6>Payment methods</h6>
-                            <div class="form-group">
-                                <label>
-                                    <input type="radio" name="method_name" value="Credit/Debit Card">
-                                    <img src="{{ asset('assets/img/credit_card.png') }}" alt="Credit/Debit Card" class="wallet-image">
-                                    <div class="wallet-details">
-                                        <h6>Credit/Debit Card</h6>
-                                        <span>Credit/Debit Card</span>
-                                    </div>
-                                </label>
-                            </div>
+            <h6>Recommended method(s)</h6>
+            <div class="form-group">
+                <label class="payment-method">
+                    <input type="radio" name="method_name" value="ArtsChamps Wallet">
+                    <img src="{{ asset('assets/img/artschamps_wallet.png') }}" alt="ArtsChamps Wallet" class="wallet-image">
+                    <div class="wallet-details">
+                        <h6>ArtsChamps Wallet</h6>
+                        <span>Activate & Pay</span>
+                    </div>
+                </label>
+            </div>
 
-                            <div class="form-group">
-                                <label>
-                                    <input type="radio" name="method_name" value="Jazz Cash">
-                                    <img src="{{ asset('assets/img/jazz_cash.jpg') }}" alt="Jazz Cash" class="wallet-image">
-                                    <div class="wallet-details">
-                                        <h6>Jazz Cash</h6>
-                                    </div>
-                                </label>
-                            </div>
+            <h6>Payment methods</h6>
+            <div class="form-group">
+                <label class="payment-method">
+                    <input type="radio" name="method_name" value="Credit/Debit Card">
+                    <img src="{{ asset('assets/img/credit_card.png') }}" alt="Credit/Debit Card" class="wallet-image">
+                    <div class="wallet-details">
+                        <h6>Credit/Debit Card</h6>
+                        <span>Credit/Debit Card</span>
+                    </div>
+                </label>
+            </div>
 
-                            <div class="form-group">
-                                <label>
-                                    <input type="radio" name="method_name" value="Easy Paisa">
-                                    <img src="{{ asset('assets/img/easypaisa.png') }}" alt="Easy Paisa" class="wallet-image">
-                                    <div class="wallet-details">
-                                        <h6>Easy Paisa</h6>
-                                    </div>
-                                </label>
-                            </div>
+            <div class="form-group">
+                <label class="payment-method">
+                    <input type="radio" name="method_name" value="Jazz Cash">
+                    <img src="{{ asset('assets/img/jazz_cash.jpg') }}" alt="Jazz Cash" class="wallet-image">
+                    <div class="wallet-details">
+                        <h6>Jazz Cash</h6>
+                    </div>
+                </label>
+            </div>
 
-                            <div class="form-group">
-                                <label>
-                                    <input type="radio" name="method_name" value="Habib Bank Account">
-                                    <img src="{{ asset('assets/img/habib_bank.png') }}" alt="Habib Bank Account" class="wallet-image">
-                                    <div class="wallet-details">
-                                        <h6>Habib Bank Account</h6>
-                                    </div>
-                                </label>
-                            </div>
+            <div class="form-group">
+                <label class="payment-method">
+                    <input type="radio" name="method_name" value="Easy Paisa">
+                    <img src="{{ asset('assets/img/easypaisa.png') }}" alt="Easy Paisa" class="wallet-image">
+                    <div class="wallet-details">
+                        <h6>Easy Paisa</h6>
+                    </div>
+                </label>
+            </div>
 
-                            <div class="form-group">
-                                <label>
-                                    <input type="radio" name="method_name" value="Cash on Delivery">
-                                    <img src="{{ asset('assets/img/cash_on_delivery.png') }}" alt="Cash on Delivery" class="wallet-image">
-                                    <div class="wallet-details">
-                                        <h6>Cash on Delivery</h6>
-                                    </div>
-                                </label>
-                            </div>
+            <div class="form-group">
+                <label class="payment-method">
+                    <input type="radio" name="method_name" value="Habib Bank Account">
+                    <img src="{{ asset('assets/img/habib_bank.png') }}" alt="Habib Bank Account" class="wallet-image">
+                    <div class="wallet-details">
+                        <h6>Habib Bank Account</h6>
+                    </div>
+                </label>
+            </div>
 
-                            <button type="submit" class="btn btn-primary">Proceed</button>
-                        </div>
-                    </form>
-                </div>
+            <div class="form-group">
+                <label class="payment-method">
+                    <input type="radio" name="method_name" value="Cash on Delivery">
+                    <img src="{{ asset('assets/img/cash_on_delivery.png') }}" alt="Cash on Delivery" class="wallet-image">
+                    <div class="wallet-details">
+                        <h6>Cash on Delivery</h6>
+                    </div>
+                </label>
+            </div>
 
-
-
+            <button type="submit" class="btn btn-primary">Proceed</button>
+        </div>
+    </form>
+</div>
 
 
 
 
-
-
-                {{-- third --}}
 
             </div>
 
@@ -925,7 +931,7 @@
 </div>
 
 {{-- comment --}}
-                                    <div class="border-top pt-3 hide-comments" id="commentsesction" style="display: none;">
+                                    <div class="border-top pt-3 hide-comments" class="commentsesction" >
                                         <div class="row bootstrap snippets">
                                             <div class="col-md-12">
                                                 <div class="comment-wrapper">
@@ -934,24 +940,25 @@
                                                             <ul class="media-list comments-list">
                                                                 <li class="media comment-form">
                                                                     <a href="#" class="pull-left">
-                                                                        <img src="{{ asset('assets/images/users/user-4.jpg') }}" alt="" class="img-circle">
+                                                                        <img src="{{ asset('assets/images/users/user-4.jpg') }}" alt=""
+                                                                         class="img-circle">
                                                                     </a>
                                                                     <div class="media-body">
                                                                         <form action="" method="" role="form">
                                                                             <div class="row">
                                                                                 <div class="col-md-12">
                                                                                     <div class="input-group">
-                                                                                        <input type="text" class="form-control comment-input" placeholder="Write a comment...">
-                                                                                        <button class="btn search-button" type="submit" id="button-addon2">
-                                                                                            <img src="{{ asset('assets/img/m-send.png') }}" alt="Messenger icon">
+                                                    <input type="text" class="form-control comment-input" placeholder="Write a comment...">
+                                                             <button class="btn search-button" type="submit" id="button-addon2">
+                                                        <img src="{{ asset('assets/img/m-send.png') }}" alt="Messenger icon">
                                                                                         </button>
 
-                                                                                        <div class="input-group-btn">
-                                                                                            <button type="button" class="btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Emoji"><i class='bx bxs-smiley-happy'></i></button>
-                                                                                            <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Attach Image"><i class='bx bx-camera'></i></button>
-                                                                                            <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Record Audio"><i class='bx bx-microphone'></i></button>
-                                                                                            <button type="button" class="btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Attach File"><i class='bx bx-file-blank'></i></button>
-                                                                                        </div>
+        <div class="input-group-btn">
+        <button type="button" class="btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Emoji"><i class='bx bxs-smiley-happy'></i></button>
+        <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Attach Image"><i class='bx bx-camera'></i></button>
+        <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Record Audio"><i class='bx bx-microphone'></i></button>
+        <button type="button" class="btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Attach File"><i class='bx bx-file-blank'></i></button>
+        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -959,7 +966,7 @@
                                                                     </div>
                                                                 </li>
                                                                 <br>
-                                                <div id="commentsection-inner">
+                                                <div class="commentsection-inner">
 
                                                 </div>
 
@@ -1113,7 +1120,7 @@
     </div>
 
 </div>
-  </div>
+</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -1153,7 +1160,8 @@
         });
 
 // comment
-        $('#commentbtn').click(function(){
+$('.commentsesction').hide();
+    $('.commentbtn').click(function(){
 
     let postid  = $(this).data('id');
 
@@ -1167,7 +1175,8 @@
 
         console.log(commentarray);
 
-        $('#commentsesction').css('display','block');
+        // $('.commentsesction').css('display','block');
+        $('.commentsesction').show();
 
         let data = '';
 
@@ -1189,7 +1198,7 @@
                                                 `;
         });
 
-        $('#commentsection-inner').html(data);
+        $('.commentsection-inner').html(data);
 
 
         // $('#likebtn').html("<i class='bx bxs-like mr-2 text-dark fw-bold'>&nbsp;Like</i>");
@@ -1326,15 +1335,15 @@ function sharePostAsMessage(element) {
             modal.find('#modalImage').attr('src', imageSrc);
             modal.find('#modalPrice').text('Pkr ' + price);
 
-            // Update the URL with the post_id
+
             var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?post_id=' + postId;
             window.history.pushState({path:newUrl}, '', newUrl);
 
-            // Initialize chat or load existing comments here if needed
+
         });
 
         $('#imageModal').on('hide.bs.modal', function () {
-            // Remove the post_id from the URL when the modal is closed
+
             var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
             window.history.pushState({path:newUrl}, '', newUrl);
         });
