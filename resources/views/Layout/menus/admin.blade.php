@@ -102,11 +102,12 @@
         </a>
         <div class="collapse" id="auth">
           <ul class="nav flex-column sub-menu">
-              <li class="nav-item" > <a class="nav-link" style="color: white" href="{{ url('dashboard/admin/messages/') }}"> Message </a></li>
+              <li class="nav-item" > <a class="nav-link" style="color: white" href="{{ url('dashboard/admin/messages/') }}">
+                 Message </a></li>
               <li class="nav-item" > <a class="nav-link" style="color: white" href="{{ url('dashboard/admin/like/') }}">
                   Like </a></li>
-
-
+ <li class="nav-item" > <a class="nav-link" style="color: white" href="{{ url('dashboard/admin/comment/') }}">
+     Comment </a></li>
 
           </ul>
         </div>

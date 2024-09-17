@@ -1,18 +1,13 @@
-@extends('Layout.artistdashboard_layout')
+@extends('Layout.Dashboard_layout')
 
 <style>
     .bg-green{
         background-color: #00d25b;
-
     }
     .btn-green{
         background-color: #00d25b;
         color: white;
-
-
-
     }
-
     button.bg-green{
         background-color: #00d25b;
         color: white;
@@ -27,7 +22,7 @@
 </style>
 @section('AdminContent')
     <div class="container mt-5 ">
-        <h3>Profile Table</h3>
+        <h3>Role Table</h3>
         <div class="header_wrap">
             <div class="num_rows">
                 <div class="row justify-content-between">
@@ -51,7 +46,7 @@
                             <div class="input-group">
                                 <input type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search.."
                                 class="form-control">
-                                <button class="btn  btn-success"><a style="border-bottom: none;text-decoration:none;" href="{{url('dashboard/admin/profile/add')}}" class="text-white">Add Profile</a></button>
+                                <button class="btn  btn-success"><a style="text-decoration: none;" href="{{url('dashboard/admin/gallery/add')}}" class="text-white">Gallery</a></button>
                             </div>
                         </div>
 
@@ -61,31 +56,38 @@
             </div>
 
         </div>
+        @if (session()->has('status'))
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> {{ session()->get('status') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
         <table class="table table-striped table-class" id= "table-id">
             <thead class="bg-green ">
                 <tr>
-                    <th># </th>
-                    <th>Profile_Img</th>
-                    <th>Banner_Img
-                    </th>
-<th>Action</th>
+                
+
+                    <th>Billing_Address</th>
+                    <th>Billing_City</th>
+                    <th>Billing_State</th>
+                    <th>Billing_Zip</th>
+                    <th>Billing_Country</th>
 
                 </tr>
             </thead>
             <tbody>
 
-@foreach ($profile as $item)
-
+                @foreach ($billing as $item)
 
                 <tr class="">
-                    <td>{{$item->profile_id }}</td>
+                    <td>{{$item->billing_address }}</td>
+                    <td>{{ $item->billing_city }}</td>
+                    <td>{{ $item->billing_state }}</td>
+                    <td>{{ $item->billing_zip }}</td>
+                    <td>{{ $item->billing_country }}</td>
 
-                    <td><img src="{{ asset('storage/assets/img' . $item->profile_img) }}" width="100" alt="Profile Image"></td>
-                    <td><img src="{{ asset('storage/assets/img' . $item->banner_img) }}" width="100" alt="Banner Image"></td>
-                    <td>
-                        <a href="{{ url('/dashboard/admin/profile/edit') }}/{{ $item->profile_id }}" class="btn btn-warning">Edit</a>
-                        <a href="{{ url('/dashboard/admin/profile/delete') }}/{{ $item->profile_id }}" class="btn btn-danger">Delete</a>
-                    </td>
                 </tr>
 
                 @endforeach

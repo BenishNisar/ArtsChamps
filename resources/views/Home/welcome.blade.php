@@ -501,16 +501,14 @@
 
 
 
+
 <!-- Image Modal -->
-<div class="modal fade" style="width:100%;height:100vh;background-color:black;" id="imageModal"
-     tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+<div class="modal fade" style="width:100%;height:100vh;background-color:black;" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 90%;" role="document">
-            <div class="modal-content" style="background-color:black; width: 100%;">
+        <div class="modal-content" style="background-color:black; width: 100%;">
             <div class="modal-header" style="border:none; position:relative;">
                 <img src="{{ asset('assets/img/artschamps_profile.png') }}" style="position:absolute;left:-70px;" width="50px" alt="">
-                <button type="button" class="close" style="color:white; position:absolute; left:-40px;
-                font-size:4rem; height: 40px; line-height: 50px; text-align: center; background: transparent;
-                 border:none; border-radius:5px;" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" style="color:white; position:absolute; left:-40px; font-size:4rem; height: 40px; line-height: 50px; text-align: center; background: transparent; border:none; border-radius:5px;" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -522,26 +520,31 @@
                 </div>
 
                 <!-- Chat/Comment Section -->
-                <div class="col-md-6" style="padding: 20px; background-color: #fff; border-radius: 10px;margin-left:100px;
-                 min-height: 600px;max-width:30%;  overflow-y: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
-                    <h6 style="color:black;">Comments:</h6>
-                    <div id="chatMessages" style="max-height: calc(100% - 80px); overflow-y: auto;
-                     border: 1px solid #ccc; padding: 10px; border-radius: 10px; background:#f9f9f9;">
-                        <!-- Chat messages will be appended here -->
+
+                {{-- <div class="col-md-6 commentsesction" id="comments-{{ $post->post_id }}" style="padding: 20px; background-color: #fff; border-radius: 10px; margin-left:100px; min-height: 600px; max-width:30%; overflow-y: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+                    <h6 style="color:black;">Comments</h6>
+                    <div class="commentsection-inner" id="commentsection-inner-{{ $post->post_id }}">
+                        <!-- All comments will be dynamically appended here -->
                     </div>
-                    <form id="chatForm" style="margin-top:10px;position:fixed;bottom:12px;width:300px;">
+
+                    <form class="comment-form" method="POST" action="{{ route('add-comment') }}" style="margin-top:10px;">
+                        @csrf
+                        <input type="hidden" name="post_id" value="{{ $post->post_id }}">
+                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                         <div class="form-group">
-                            <textarea id="chatMessage" class="form-control" rows="3" placeholder="Type your message here..." style="border-radius:10px;"></textarea>
+                            <textarea id="chatMessage" class="form-control" rows="3" name="comment_name" placeholder="Type your message here..." style="border-radius:10px;"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary" style="border-radius:10px; background:purple; border:none;">
                             <i class="fas fa-paper-plane"></i> Send
                         </button>
                     </form>
-                </div>
+                </div> --}}
+
             </div>
         </div>
     </div>
 </div>
+
 
 
 
@@ -616,10 +619,6 @@
                                         </div>
                                     </div>
 
-
-
-
-
                                     <div class="mt-3">
                                         <p> {{ $post->content }}</p>
                                         <h5 class="price-display">Price: <span class="price-value">Pkr: {{ $post->price }}</span></h5>
@@ -635,10 +634,14 @@
                                                     text-primary
                                                     @endif'
                                                 >&nbsp;Like </i> </a>
-                                            <a style="text-decoration: none;" href="javascript:void(0)"
-                                             class="commentbtn" data-id="{{ $post->post_id }}"
-                                                 class="post-card-buttons ml-3">
-                                                <i class='bx bx-message-rounded mr-2'></i> Comment</a>
+
+{{-- comment --}}
+<a style="text-decoration: none;" href="javascript:void(0)" class="commentbtn" data-id="{{ $post->post_id }}">
+    <i class='bx bx-message-rounded mr-2'></i> Comment
+</a>
+
+{{-- comment --}}
+
 
                                                 <div class="dropdown dropup share-dropup ml-3">
                                                     <a style="text-decoration: none;" href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -647,16 +650,18 @@
                                                     <div class="dropdown-menu post-dropdown-menu">
                                                         <a style="text-decoration: none;" href="#" class="dropdown-item" data-post-id="POST_ID" onclick="sharePostAsMessage(this)">
                                                             <div class="row">
-                                                                <div class="col-md-2">
+                                                                <div class="col-2">
                                                                     <i class='bx bx-message'></i>
                                                                 </div>
-                                                                <div class="col-md-10">
+                                                                <div class="col-10">
                                                                     <span>Send as Message</span>
                                                                 </div>
                                                             </div>
                                                         </a>
                                                     </div>
                                                 </div>
+
+                                        {{-- share --}}
 
 
 
@@ -709,7 +714,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+
+ <div class="modal-body">
 
        <!-- First Form -->
 <div id="firstForm">
@@ -720,6 +726,7 @@
                 <div class="col-md-12">
                     <img src="{{ asset($post->post_img) }}" alt="Online user" width="400px" height="400px" class="mr-3 post-user-image">
                     <h5 class="price-display">Price: <span class="price-value">Pkr{{ $post->price }}</span></h5>
+                    <input type="hidden" name="post_id" id="post_id" value="{{ $post->post_id }}">
                 </div>
             @endif
             {{-- <input type="hidden" name="post_id" value="{{ $post->id }}">
@@ -730,9 +737,9 @@
 
                 {{-- first --}}
 
-                <!-- Second Form -->
-                <div id="secondForm" style="display: none;">
-                    <form action="{{ route('save.billing') }}" method="POST">
+        <!-- Second Form -->
+<div id="secondForm" style="display: none;">
+                    <form id="billingForm" action="{{ route('save.billing') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="form-group col-md-6">
@@ -825,11 +832,19 @@
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+
+{{-- <input type="hidden" name="order_id" value="{{ session('order_id') }}">
+
+                            <p>Order ID: {{ session('order_id') }}</p>  <!-- Debugging line --> --}}
+
+
+
                         </div>
                     </form>
-                </div>
+</div>
 
           <!-- Third Form -->
+
 <div id="thirdForm" style="display: none;">
     <form action="{{ route('finalize.billing') }}" method="POST">
         @csrf
@@ -900,7 +915,7 @@
                 </label>
             </div>
 
-            <button type="submit" class="btn btn-primary">Proceed</button>
+
         </div>
     </form>
 </div>
@@ -908,13 +923,12 @@
 
 
 
-
-            </div>
+</div>
 
             <div class="modal-footer">
                 <!-- Navigation Buttons -->
                 <button type="button" id="previousButton" class="btn btn-secondary" style="display:none;">Previous</button>
-                <button type="button" id="continueButton" class="btn btn-primary">Continue</button>
+                <button type="button submit" id="continueButton" class="btn btn-primary">Continue</button>
             </div>
         </div>
     </div>
@@ -930,54 +944,52 @@
 </div>
 </div>
 
-{{-- comment --}}
-                                    <div class="border-top pt-3 hide-comments" class="commentsesction" >
-                                        <div class="row bootstrap snippets">
+
+
+{{-- Comment Section --}}
+<div class="border-top pt-3 hide-comments commentsesction" id="comments-{{ $post->post_id }}" style="display:none;">
+    <div class="row bootstrap snippets">
+        <div class="col-md-12">
+            <div class="comment-wrapper">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <ul class="media-list comments-list">
+                            <li class="media comment-form">
+                                <a href="#" class="pull-left">
+                                    <img src="{{ asset('assets/images/users/user-4.jpg') }}" alt="" class="img-circle">
+                                </a>
+                                <div class="media-body">
+                                    <!-- Comment Form -->
+                                    <form class="comment-form" method="POST" action="{{ route('add-comment') }}">
+                                        @csrf
+                                        <input type="hidden" name="post_id" value="{{ $post->post_id }}">
+                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                        <div class="row">
                                             <div class="col-md-12">
-                                                <div class="comment-wrapper">
-                                                    <div class="panel panel-info">
-                                                        <div class="panel-body">
-                                                            <ul class="media-list comments-list">
-                                                                <li class="media comment-form">
-                                                                    <a href="#" class="pull-left">
-                                                                        <img src="{{ asset('assets/images/users/user-4.jpg') }}" alt=""
-                                                                         class="img-circle">
-                                                                    </a>
-                                                                    <div class="media-body">
-                                                                        <form action="" method="" role="form">
-                                                                            <div class="row">
-                                                                                <div class="col-md-12">
-                                                                                    <div class="input-group">
-                                                    <input type="text" class="form-control comment-input" placeholder="Write a comment...">
-                                                             <button class="btn search-button" type="submit" id="button-addon2">
-                                                        <img src="{{ asset('assets/img/m-send.png') }}" alt="Messenger icon">
-                                                                                        </button>
-
-        <div class="input-group-btn">
-        <button type="button" class="btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Emoji"><i class='bx bxs-smiley-happy'></i></button>
-        <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Attach Image"><i class='bx bx-camera'></i></button>
-        <button type="button" class="btn comment-form-btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Record Audio"><i class='bx bx-microphone'></i></button>
-        <button type="button" class="btn comment-form-btn" data-toggle="tooltip" data-placement="top" title="Attach File"><i class='bx bx-file-blank'></i></button>
-        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
-                                                                </li>
-                                                                <br>
-                                                <div class="commentsection-inner">
-
-                                                </div>
-
-                                                                <!-- Additional comments can be added here -->
-                                                            </ul>
-                                                        </div>
-                                                    </div>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control comment-input" name="comment_name" placeholder="Write a comment...">
+                                                    <button class="btn search-button" type="submit">
+                                                        <img src="{{ asset('assets/img/m-send.png') }}" alt="Send icon">
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
+                                </div>
+                            </li>
+                            <br>
+                            <div class="commentsection-inner" id="commentsection-inner-{{ $post->post_id }}">
+                                <!-- All comments will be dynamically appended here -->
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 
@@ -1128,199 +1140,337 @@
 
 <script>
 // like
-    $(document).ready(function(){
+$(document).ready(function() {
 
-        $('#likebtn').click(function(){
+$('#likebtn').click(function() {
+    let postid = $(this).data('id');
+    let lstatus = $(this).data('lstatus');
 
-            let postid  = $(this).data('id');
-            let lstatus  = $(this).data('lstatus');
-
-            $('#likebtn').html('Loading..');
-
-                $.ajax({
-                url: "{{ url('/like-post') }}/"+postid,
-                method: 'POST',
-                data: {
-                        _token: '{{ csrf_token() }}',  // Include CSRF token for security
-                        post_id: postid,
-                        lstatus: lstatus
-                    },
-
-            success: function(response) {
-                if (response.success) {
-                    $('#likebtn').html("<i class='bx bxs-like mr-2 text-dark fw-bold'>&nbsp;Like</i>");
-                }
-                if (response.message) {
-                    $('#likebtn').html("<i class='bx bxs-like mr-2 text-primary '>&nbsp;Like</i>");
-                }
-            }
-
-        });
-
-        });
-
-// comment
-$('.commentsesction').hide();
-    $('.commentbtn').click(function(){
-
-    let postid  = $(this).data('id');
+    $('#likebtn').html('Loading..');  // Change button text to 'Loading..'
 
     $.ajax({
-    url: "{{ url('/all-comments') }}/"+postid,
-    method: 'GET',
+        url: "{{ url('/like-post') }}/" + postid,
+        method: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',  // Include CSRF token for security
+            post_id: postid,
+            lstatus: lstatus
+        },
+        success: function(response) {
+            console.log('Server Response:', response);  // Debug: Output the response
 
-    success: function(response) {
-
-        let commentarray = response.comments;
-
-        console.log(commentarray);
-
-        // $('.commentsesction').css('display','block');
-        $('.commentsesction').show();
-
-        let data = '';
-
-        commentarray.forEach(item => {
-            data += `
-            <div class="card">
-            <div class="card-head p-2 d-flex justify-content-between">
-                <p>
-                    ${item.firstname} ${item.lastname}
-                    </p>
-                    <p>
-                    ${item.created_at}
-                    </p>
-                                                    </div>
-                                                    <div class="card-body p-2">
-                                                    ${item.comment_name}
-                                                    </div>
-                                                </div>
-                                                `;
-        });
-
-        $('.commentsection-inner').html(data);
-
-
-        // $('#likebtn').html("<i class='bx bxs-like mr-2 text-dark fw-bold'>&nbsp;Like</i>");
-
-
-}
-
-});
-
-});
-
-
-
-    });
-
-    // billing forms start
-
-    $(document).ready(function() {
-        $('#continueButton').click(function() {
-            if ($('#firstForm').is(':visible')) {
-                $('#firstForm').hide();
-                $('#secondForm').show();
-                $('#previousButton').show();
-                $('#continueButton').text('Next');
-            } else if ($('#secondForm').is(':visible')) {
-                $('#secondForm').hide();
-                $('#thirdForm').show();
-                $('#continueButton').text('Submit');
-            } else if ($('#thirdForm').is(':visible')) {
-                submitForm();
+            // Reset button HTML based on the response
+            if (response.success) {
+                $('#likebtn').html("<i class='bx bxs-like mr-2 text-dark fw-bold'>&nbsp;Like</i>");
             }
-        });
-
-        $('#previousButton').click(function() {
-            if ($('#secondForm').is(':visible')) {
-                $('#secondForm').hide();
-                $('#firstForm').show();
-                $('#previousButton').hide();
-                $('#continueButton').text('Continue');
-            } else if ($('#thirdForm').is(':visible')) {
-                $('#thirdForm').hide();
-                $('#secondForm').show();
-                $('#continueButton').text('Next');
+            if (response.message) {
+                $('#likebtn').html("<i class='bx bxs-like mr-2 text-primary'>&nbsp;Liked</i>");
+            } else {
+                $('#likebtn').html("<i class='bx bxs-like mr-2 text-dark fw-bold'>&nbsp;Like</i>");
             }
-        });
-
-        function submitForm() {
-            var formData = new FormData();
-            var formId;
-
-            if ($('#firstForm').is(':visible')) {
-                formId = '#firstFormContent';
-            } else if ($('#secondForm').is(':visible')) {
-                formId = '#secondFormContent';
-            } else if ($('#thirdForm').is(':visible')) {
-                formId = '#thirdFormContent';
-            }
-
-            $(formId).find('input, select').each(function() {
-                if ($(this).attr('type') === 'radio' && $(this).is(':checked')) {
-                    formData.append($(this).attr('name'), $(this).val());
-                } else if ($(this).attr('type') !== 'radio') {
-                    formData.append($(this).attr('name'), $(this).val());
-                }
-            });
-
-            $.ajax({
-                url: $(formId).attr('action'),
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    console.log('Success:', response);
-                    $('#billingDetailsModal').modal('hide');
-                },
-                error: function(xhr) {
-                    console.log('Error:', xhr.responseText);
-                }
-            });
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', status, error);  // Debug: Output any AJAX errors
+            $('#likebtn').html("<i class='bx bxs-like mr-2 text-dark fw-bold'>&nbsp;Like</i>");  // Reset button text on error
         }
     });
 
+});
+
+});
+
+// comment
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
 
+$(document).ready(function() {
+    // Toggle the comment section on "Comment" button click
+    $('.commentbtn').click(function() {
+        let postId = $(this).data('id');
+        $(`#comments-${postId}`).toggle(); // Toggle the visibility of the comments section
+    });
 
+    // Attach submit event to the form
+    $('.comment-form').submit(function(e) {
+        e.preventDefault(); // Prevent the default form submission
 
+        let form = $(this);
+        let postid = form.find('input[name="post_id"]').val();
 
-
-
-// billing form end
-
-
-// share ajax
-function sharePostAsMessage(element) {
-    var postId = element.getAttribute('data-post-id');
-    var recipientId = prompt("Enter the recipient's ID:");
-
-    if (recipientId) {
         $.ajax({
-            url: '/share-post-as-message',
-            type: 'POST',
-            data: {
-                post_id: postId,
-                recipient_id: recipientId,
-                _token: '{{ csrf_token() }}' // Laravel CSRF token for security
-            },
+            url: "{{ route('add-comment') }}", // Ensure this is the correct route
+            method: 'POST',
+            data: form.serialize(),
             success: function(response) {
-                alert('Post shared successfully as a message!');
+                if (response.message === "Comment added successfully") {
+                    $.ajax({
+                        url: `{{ url('/all-comments') }}/${postid}`,
+                        method: 'GET',
+                        success: function(response) {
+                            let commentarray = response.comments;
+                            let data = '';
+
+                            // Loop through comments and display them in reverse order (most recent first)
+                            commentarray.forEach(item => {
+                                data += `
+                                <div class="card mt-2">
+                                    <div class="card-head p-2 d-flex justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <img src="${item.profile_img}" alt="Profile Image" class="img-circle mr-2" style="width: 30px; height: 30px;">
+                                            <p class="mb-0">
+                                                ${item.firstname} ${item.lastname}
+                                            </p>
+                                        </div>
+                                        <p class="mb-0 text-muted">
+                                            ${new Date(item.created_at).toLocaleString()}
+                                        </p>
+                                    </div>
+                                    <div class="card-body p-2">
+                                        ${item.comment_name}
+                                    </div>
+                                </div>`;
+                            });
+
+                            // Prepend the new comment at the top
+                            $(`#commentsection-inner-${postid}`).html(data);
+                            $(`#comments-${postid}`).show(); // Ensure the comments section is shown after a new comment is added
+                        }
+                    });
+                }
             },
-            error: function(xhr) {
-                alert('An error occurred while sharing the post.');
+            error: function(xhr, status, error) {
+                console.log("Error: " + error);
             }
         });
+    });
+});
+
+
+
+
+
+
+// comment
+
+$(document).ready(function() {
+    // Set CSRF token header for all AJAX requests
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    var currentStep = 1;
+
+    $('#continueButton').click(function() {
+        if (currentStep === 1) {
+            if (validateFirstForm()) {
+                var post_id = $('#post_id').val();
+
+                $.ajax({
+                    url: "{{ route('first.form.submit') }}",
+                    type: 'POST',
+                    data: { 'post_id': post_id },
+                    success: function(response) {
+                        console.log('First form submitted successfully:', response);
+                        $('#firstForm').fadeOut('slow', function() {
+                            $('#secondForm').fadeIn('slow');
+                        });
+                        $('#previousButton').show();
+                        $('#continueButton').text('Next');
+                        currentStep++;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error submitting first form:', error);
+                        alert('There was an error submitting your form. Please try again.');
+                    }
+                });
+            }
+        } else if (currentStep === 2) {
+            if (validateSecondForm()) {
+                var formData = new FormData($('#billingForm')[0]);
+
+                $.ajax({
+                    url: "{{ route('save.billing') }}",
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#secondForm').fadeOut('slow', function() {
+                            $('#thirdForm').fadeIn('slow');
+                        });
+                        console.log('Second form submitted successfully:', response);
+                        $('#continueButton').text('Submit');
+                        currentStep++;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error submitting second form:', error);
+                        alert('There was an error submitting your form. Please try again.');
+                    }
+                });
+            }
+        } else if (currentStep === 3) {
+            submitForm();
+        }
+    });
+
+    // Handle "Previous" button click
+    $('#previousButton').click(function() {
+        if (currentStep === 2) {
+            $('#secondForm').fadeOut('slow', function() {
+                $('#firstForm').fadeIn('slow');
+            });
+            $('#previousButton').hide();
+            $('#continueButton').text('Continue');
+            currentStep--;
+        } else if (currentStep === 3) {
+            $('#thirdForm').fadeOut('slow', function() {
+                $('#secondForm').fadeIn('slow');
+            });
+            $('#continueButton').text('Next');
+            currentStep--;
+        }
+    });
+
+    // First form validation
+    function validateFirstForm() {
+        var isValid = true;
+        $('#firstForm').find('input[required]').each(function() {
+            if ($(this).val() === '') {
+                isValid = false;
+                alert('Please fill out all required fields in the first form.');
+                return false;
+            }
+        });
+        return isValid;
     }
+
+    // Second form validation
+    function validateSecondForm() {
+        var isValid = true;
+        $('#secondForm').find('input[required]').each(function() {
+            if ($(this).val() === '') {
+                isValid = false;
+                alert('Please fill out all required fields in the second form.');
+                return false;
+            }
+        });
+        return isValid;
+    }
+
+
+    function submitForm() {
+    var formData = new FormData();
+
+    // Collect data from #firstFormContent
+    $('#firstFormContent').find('input, select').each(function() {
+        if ($(this).is(':radio') && $(this).is(':checked')) {
+            formData.append($(this).attr('name'), $(this).val());
+        } else if ($(this).val() !== '') {
+            formData.append($(this).attr('name'), $(this).val());
+        }
+    });
+
+    // Collect data from #billingForm
+    $('#billingForm').find('input, select').each(function() {
+        if ($(this).is(':radio') && $(this).is(':checked')) {
+            formData.append($(this).attr('name'), $(this).val());
+        } else if ($(this).val() !== '') {
+            formData.append($(this).attr('name'), $(this).val());
+        }
+    });
+
+    // Collect data from #thirdForm
+    $('#thirdForm').find('input, select').each(function() {
+        if ($(this).is(':radio') && $(this).is(':checked')) {
+            formData.append($(this).attr('name'), $(this).val());
+        } else if ($(this).val() !== '') {
+            formData.append($(this).attr('name'), $(this).val());
+        }
+    });
+
+    $('#loadingIndicator').show();
+
+    $.ajax({
+        url: "{{ route('finalize.billing') }}",
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            console.log('Final form submitted successfully:', response);
+            $('#billingDetailsModal').modal('hide');
+            $('#loadingIndicator').hide();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error submitting final form:', error);
+            alert('There was an error submitting your form. Please try again.');
+            $('#loadingIndicator').hide();
+        }
+    });
 }
 
 
+
+});
+
+
+
+
+// billing
 
 
 </script>
 {{-- modalpost--}}
+
+
+
+
+{{-- share --}}
+{{-- <script>
+    var loggedInUserId = @json(auth()->user()->id);
+
+
+    function sharePostAsMessage(element) {
+    var postId = $(element).data('post-id');
+    var userId = loggedInUserId; // Ensure this is defined correctly
+
+    $.ajax({
+        url: '/share',  // Ensure this is the correct endpoint
+        method: 'POST',
+        data: {
+            post_id: postId,
+            user_id: userId,
+            _token: '{{ csrf_token() }}'  // Ensure CSRF token is correctly included
+        },
+        success: function(response) {
+            console.log(response); // Check the response
+            if (response.status === 'success') {
+                alert('Post shared successfully!');
+            } else {
+                alert('Failed to share the post.');
+            }
+        },
+        error: function(xhr) {
+            console.error(xhr.responseText); // Log any errors
+            alert('An error occurred. Please try again.');
+        }
+    });
+}
+
+
+
+
+</script> --}}
+
+
+
 
 
 <script>
@@ -1335,29 +1485,19 @@ function sharePostAsMessage(element) {
             modal.find('#modalImage').attr('src', imageSrc);
             modal.find('#modalPrice').text('Pkr ' + price);
 
-
             var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?post_id=' + postId;
             window.history.pushState({path:newUrl}, '', newUrl);
-
-
         });
 
         $('#imageModal').on('hide.bs.modal', function () {
-
             var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
             window.history.pushState({path:newUrl}, '', newUrl);
         });
 
-        $('#chatForm').on('submit', function(e) {
-            e.preventDefault();
-            var message = $('#chatMessage').val();
-            if (message.trim() !== '') {
-                $('#chatMessages').append('<div class="chat-message" style="padding:5px; margin-bottom:5px; background:#333; border-radius:5px; color:white;">' + message + '</div>');
-                $('#chatMessage').val(''); // Clear input field
-            }
-        });
+
     });
-    </script>
+</script>
+
 
 
 

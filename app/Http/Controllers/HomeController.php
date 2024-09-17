@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Billing;
 use App\Models\BillingDetail;
 use App\Models\PaymentMethod;
+use App\Models\Share;
+use App\Models\CardDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -51,11 +53,49 @@ ORDER BY
 
 
 
+
+
         $profile = DB::select('select * from profile where user_id = ? order by profile_id desc limit 1', [Auth::user()->id]);
         // $gallery=DB::select('select users.id,gallery.gallery_img from gallery inner join users on gallery.user_id=users.id');
         $gallery = DB::select('select * from gallery where user_id = ? order by gallery_id desc', [Auth()->user()->id]);
 
-        return view('Home.welcome', compact('about', 'posts', 'likes', 'profile', 'gallery'));
+
+        // billingdata
+
+        $billingData = DB::select('
+        SELECT
+            users.firstname,
+            users.lastname,
+            card_details.card_number,
+            card_details.expiration_date,
+            card_details.card_holder_name,
+            users.email,
+            users.phone,
+            billing.billing_country,
+            billing.billing_state,
+            billing.billing_zip,
+            billing.billing_address,
+            billing.billing_city,
+            billing.total_amount,
+            payment_methods.method_name
+        FROM orders
+        INNER JOIN card_details ON orders.id = card_details.order_id
+        INNER JOIN billing ON billing.id = orders.id
+        INNER JOIN users ON users.id = orders.user_id
+        INNER JOIN payment_methods ON orders.payment_method_id = payment_methods.id
+    ');
+
+
+
+
+        return view('Home.welcome', compact(
+            'about',
+            'posts',
+            'likes',
+            'profile',
+            'gallery',
+            'billingData'
+        ));
     }
 
     public function showProfile()
@@ -156,17 +196,38 @@ ORDER BY
     }
 
 
-    public function allcomments($id)
+
+
+    // Add a new comment
+    public function allComments($postId)
     {
-        $comments = DB::select(
-            'SELECT comment.*, users.profile_img, users.firstname, users.lastname
-        FROM comment
-        LEFT JOIN users ON users.id = comment.user_id
-        WHERE comment.post_id = ?',
-            [$id]
-        );
+        $comments = DB::table('comment')
+            ->join('users', 'comment.user_id', '=', 'users.id')
+            ->where('comment.post_id', $postId)
+            ->select('comment.comment_name', 'comment.created_at', 'users.firstname', 'users.lastname', 'users.profile_img')
+            ->orderBy('comment.created_at', 'desc')
+            ->get();
 
         return response()->json(['comments' => $comments]);
+    }
+
+    public function addComment(Request $request)
+    {
+        $request->validate([
+            'comment_name' => 'required|string|max:255',
+            'post_id' => 'required|integer',
+            'user_id' => 'required|integer',
+        ]);
+
+        DB::table('comment')->insert([
+            'comment_name' => $request->input('comment_name'),
+            'post_id' => $request->input('post_id'),
+            'user_id' => $request->input('user_id'),
+            'created_at' => now(),
+
+        ]);
+
+        return response()->json(['message' => 'Comment added successfully']);
     }
 
 
@@ -210,60 +271,77 @@ ORDER BY
 
 
 
-    public function saveBilling(Request $request)
+
+
+    public function sharePost(Request $request)
     {
-        $billingData = DB::select('
-            SELECT
-                users.firstname,
-                users.lastname,
-                card_details.card_number,
-                card_details.expiration_date,
-                card_details.card_holder_name,
-                users.email,
-                users.phone,
-                billing.billing_country,
-                billing.billing_state,
-                billing.billing_zip,
-                billing.billing_address,
-                billing.billing_city,
-                billing.total_amount,
-                payment_methods.method_name
-            FROM orders
-            INNER JOIN card_details ON orders.id = card_details.order_id
-            INNER JOIN billing ON billing.order_id = orders.id
-            INNER JOIN users ON users.id = orders.user_id
-            INNER JOIN payment_methods ON orders.payment_method_id = payment_methods.id
-        ');
+        try {
+            $share = new Share();
+            $share->post_id = $request->post_id;
+            $share->user_id = $request->user_id;
+            $share->save();
 
-
-
-        return response()->json(['success' => true, 'data' => $billingData]);
+            return response()->json(['status' => 'success']);
+        } catch (\Exception $e) {
+            // Output error message directly
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
+
+
+
+
+
+
+    // public function saveBilling(Request $request)
+    // {
+    //     $billingData = DB::select('
+    //         SELECT
+    //             users.firstname,
+    //             users.lastname,
+    //             card_details.card_number,
+    //             card_details.expiration_date,
+    //             card_details.card_holder_name,
+    //             users.email,
+    //             users.phone,
+    //             billing.billing_country,
+    //             billing.billing_state,
+    //             billing.billing_zip,
+    //             billing.billing_address,
+    //             billing.billing_city,
+    //             billing.total_amount,
+    //             payment_methods.method_name
+    //         FROM orders
+    //         INNER JOIN card_details ON orders.id = card_details.order_id
+    //         INNER JOIN billing ON billing.order_id = orders.id
+    //         INNER JOIN users ON users.id = orders.user_id
+    //         INNER JOIN payment_methods ON orders.payment_method_id = payment_methods.id
+    //     ');
+
+
+
+    //     return response()->json(['success' => true, 'data' => $billingData]);
+    // }
 
     public function submitFirstForm(Request $request)
     {
 
-        $validatedData = $request->validate([
-            'post_id' => 'required',
-            'user_id' => 'required',
-        ]);
+        $data = [
+            'post_id' => $request->post_id,
+            'user_id' => Auth::user()->id,
+            'total_amount' => $request->price
+        ];
+
+        session()->put('billing', $data);
 
 
-        $order = Order::create([
-            'post_id' => $validatedData['post_id'],
-            'user_id' => $validatedData['user_id'],
-            'payment_method_id' => null,
-            'order_status' => 'pending',
-            'order_date' => now(),
-        ]);
-
-        return redirect()->route('billing.form')->with('order_id', $order->id);
+        return response()->json(['success' => 'submitted']);
     }
+
 
 
     public function saveSecondForm(Request $request)
     {
-
         $validatedData = $request->validate([
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
@@ -277,17 +355,38 @@ ORDER BY
             'billing_zip' => 'required|string|max:10',
             'billing_address' => 'required|string|max:255',
             'billing_city' => 'required|string|max:255',
-            'order_id' => 'required|exists:orders,id' // Ensure order_id is included and valid
         ]);
 
-        // Save the data to the database
-        BillingDetail::create($validatedData);
 
-        return response()->json(['message' => 'Billing details saved successfully']);
+
+        DB::transaction(function () use ($validatedData, $request) {
+            $data = session()->get('billing');
+            // Step 1: Save billing details
+            $billing = Billing::create([
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'billing_country' => $request->billing_country,
+                'billing_state' => $request->billing_state,
+                'billing_zip' => $request->billing_zip,
+                'billing_address' => $request->billing_address,
+                'billing_city' => $request->billing_city,
+                'total_amount' => $data['total_amount'],
+                'order_id' => session('order_id'),  // Assuming order ID is in session
+            ]);
+
+            // Step 2: Save card details
+           $carddetails= CardDetails::create([
+                'card_holder_name' => $request->card_holder_name,
+                'card_number' => $request->card_number,
+                'expiration_date' => $request->expiration_date,
+                'order_id' => $billing->order_id,
+            ]);
+        });
+
+        return response()->json(['message' => 'Billing and card details saved successfully']);
     }
-
-
-
 
 
     public function finalizeBilling(Request $request)
@@ -297,16 +396,13 @@ ORDER BY
             'method_name' => 'required|string',
         ]);
 
+        $billing = new BillingDetail();
+        $billing->method_name = $request->input('method_name');
+        $billing->save();
 
-        PaymentMethod::create([
-            'method_name' => $request->method_name,
-        ]);
-
-
-        return redirect()->back()->with('success', 'Payment method saved successfully');
+        // Return a response (this could be a redirect or a JSON response)
+        return response()->json(['success' => true, 'message' => 'Payment method saved successfully.']);
     }
-
-
 
 
 
