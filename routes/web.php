@@ -281,6 +281,11 @@ Route::get('/dashboard/artist/gallery/', [ArtGalleryController::class, 'index'])
 Route::get('/dashboard/artist/card_details/', [CardDetailsController::class, 'index']);
 
 
+
+Route::get('/notifications', [NotificationController::class, 'userNotifications'])->name('user.notifications');
+Route::get('/notifications/count', [NotificationController::class, 'getUnreadCount'])->name('user.notifications.count');
+
+
 // routes/web.php
 Route::post('/first-form-submit', [HomeController::class, 'submitFirstForm'])->name('first.form.submit');
 // routes/web.php

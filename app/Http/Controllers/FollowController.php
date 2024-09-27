@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class FollowController extends Controller
 {
-    
+
      // Method to follow a user
      public function follow($id)
      {
@@ -39,14 +39,16 @@ class FollowController extends Controller
          // Create a notification
 
 
-    Notification::create([
-        'user_id' => $id, // The user being followed
-        'message' => Auth::user()->name . ' started following you.',
-    ]);
 
+         Notification::create([
+            'user_id' => $id, // The user being followed receives the notification
+            'message' => Auth::user()->name . ' started following you.',
+            'type' => 'follow',
+            'is_read' => false, // Initially, the notification is unread
+            'created_at' => now(),
+        ]);
 
-
-         return redirect()->back()->with('status', 'You are now following this user.');
+        return redirect()->back()->with('status', 'You are now following this user.');
 
 
      }

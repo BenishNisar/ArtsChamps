@@ -92,6 +92,7 @@
 
 <a href="#" id="notification-icon" class="text-decoration-none" style="color:red;font-size:22px;"><i class="far fa-bell ml-3 d-none d-md-block"></i></a>
 
+
         <div class="dropdown ml-3 d-none d-md-block">
             <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img src="{{asset(Auth::user()->profile_img)}}"  alt="" class="rounded-circle" width="32px" height="32px">
@@ -129,6 +130,8 @@
         var offcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasScrolling'));
         offcanvas.show();
     });
+
+
 </script>
 
 
