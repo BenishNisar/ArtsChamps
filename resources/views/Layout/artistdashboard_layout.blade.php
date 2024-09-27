@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Dashboard Admin</title>
+    <title>Dashboard Artist</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{asset('dashboard_assets/vendors/mdi/css/materialdesignicons.min.css')}}">
     <link rel="stylesheet" href="{{asset('dashboard_assets/vendors/css/vendor.bundle.base.css')}}">
@@ -64,14 +64,7 @@
 
 
 
-            <li class="nav-item menu-items">
-              <a class="nav-link" style="color: white" href="{{ url('/dashboard/artist/artwork/') }}">
-                <span class="menu-icon">
-                  <i class="mdi mdi-playlist-play"></i>
-                </span>
-                <span class="menu-title">Artwork</span>
-              </a>
-            </li>
+
             <li class="nav-item menu-items">
               <a class="nav-link" style="color: white" href="{{ url('dashboard/artist/gallery/') }}">
                 <span class="menu-icon">
@@ -90,6 +83,8 @@
                   <span class="menu-title" style="color: white">Billing</span>
                 </a>
               </li>
+
+
 
 
 

@@ -25,7 +25,7 @@
 
 
         <li class="nav-item menu-items">
-          <a class="nav-link" href="{{ url('/dashboard/admin/post/') }}">
+          <a class="nav-link" href="{{ url('/dashboard/artist/post/') }}">
             <span class="menu-icon">
               <i class="mdi mdi-playlist-play"></i>
             </span>
@@ -41,7 +41,7 @@
 
 
       <li class="nav-item menu-items">
-        <a class="nav-link" style="color: white" href="{{ url('dashboard/admin/gallery/') }}">
+        <a class="nav-link" style="color: white" href="{{ url('dashboard/artist/gallery/') }}">
           <span class="menu-icon">
             <i class="mdi mdi-table-large"></i>
           </span>
@@ -54,7 +54,7 @@
 
 
       <li class="nav-item menu-items">
-        <a class="nav-link" style="color: white" href="{{ url('dashboard/admin/billing/') }}">
+        <a class="nav-link" style="color: white" href="{{ url('dashboard/artist/billing/') }}">
           <span class="menu-icon">
             <i class="mdi mdi-table-large"></i>
           </span>
@@ -62,6 +62,23 @@
         </a>
       </li>
 
+      <li class="nav-item menu-items">
+        <a class="nav-link" style="color: white" href="{{ url('dashboard/artist/payment_method/') }}">
+          <span class="menu-icon">
+            <i class="mdi mdi-table-large"></i>
+          </span>
+          <span class="menu-title" style="color: white">Payment_Methods</span>
+        </a>
+      </li>
+
+      <li class="nav-item menu-items">
+        <a class="nav-link" style="color: white" href="{{ url('dashboard/artist/card_details/') }}">
+          <span class="menu-icon">
+            <i class="mdi mdi-table-large"></i>
+          </span>
+          <span class="menu-title" style="color: white">Card_Details</span>
+        </a>
+      </li>
 
 
 

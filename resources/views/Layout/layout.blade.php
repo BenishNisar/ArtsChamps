@@ -9,6 +9,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
+<link rel="shortcut icon" href="{{ url('assets/img/artschamps_profile.png') }}" type="image/x-icon">
 
 <link rel="stylesheet" href="{{url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css')}}">
 
@@ -89,14 +90,15 @@
 
 
 
-        <a href="#" id="notification-icon" class="text-decoration-none" style="color:#CBE4F2;font-size:22px;"><i class="far fa-bell ml-3 d-none d-md-block"></i></a>
+<a href="#" id="notification-icon" class="text-decoration-none" style="color:red;font-size:22px;"><i class="far fa-bell ml-3 d-none d-md-block"></i></a>
+
         <div class="dropdown ml-3 d-none d-md-block">
             <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img src="{{asset(Auth::user()->profile_img)}}"  alt="" class="rounded-circle" width="32px" height="32px">
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                 <a class="dropdown-item " href="{{url('/Home/profile')}}">Profile</a>
-                <a class="dropdown-item" href="{{url('/settings')}}">Settings</a>
+                <a class="dropdown-item" href="{{url('/Home/settings')}}">Settings</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item " href="{{url('/login')}}">Logout</a>
             </div>

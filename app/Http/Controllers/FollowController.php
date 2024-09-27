@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FollowController extends Controller
 {
+    
      // Method to follow a user
      public function follow($id)
      {
@@ -35,7 +36,19 @@ class FollowController extends Controller
              'created_at' => now(),
          ]);
 
+         // Create a notification
+
+
+    Notification::create([
+        'user_id' => $id, // The user being followed
+        'message' => Auth::user()->name . ' started following you.',
+    ]);
+
+
+
          return redirect()->back()->with('status', 'You are now following this user.');
+
+
      }
 
      // Method to unfollow a user
@@ -84,6 +97,10 @@ class FollowController extends Controller
 
          return view('profile', compact('gallery'));
      }
+
+
+
+// Notification
 
 
 

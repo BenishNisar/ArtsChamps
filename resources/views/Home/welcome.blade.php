@@ -67,6 +67,28 @@
     }
 
 
+/* Check */
+.success-icon {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.success-icon img {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#successMessage {
+    text-align: center;
+}
+
+#successMessage p {
+    font-size: 1.2em;
+    color: #4CAF50; /* Green color for success */
+}
+/* check */
+
+
 
 </style>
 
@@ -521,24 +543,32 @@
 
                 <!-- Chat/Comment Section -->
 
-                {{-- <div class="col-md-6 commentsesction" id="comments-{{ $post->post_id }}" style="padding: 20px; background-color: #fff; border-radius: 10px; margin-left:100px; min-height: 600px; max-width:30%; overflow-y: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+                {{-- @foreach($posts as $post)
+                <!-- Comment Section -->
+                <div class="col-md-6 comments-section" id="comments-{{ $post->post_id }}" style="padding: 20px; background-color: #fff; border-radius: 10px; margin-left:100px; min-height: 600px; max-width:30%; overflow-y: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
                     <h6 style="color:black;">Comments</h6>
-                    <div class="commentsection-inner" id="commentsection-inner-{{ $post->post_id }}">
-                        <!-- All comments will be dynamically appended here -->
+
+                    <!-- All comments will be dynamically appended here -->
+                    <div class="comment-section-inner" id="commentsection-inner-{{ $post->post_id }}">
+                        <!-- Existing comments (if any) will be displayed here -->
                     </div>
 
-                    <form class="comment-form" method="POST" action="{{ route('add-comment') }}" style="margin-top:10px;">
+                    <!-- Comment Form -->
+                    <form class="comment-form" method="POST" action="{{ route('add-comment') }}" data-post-id="{{ $post->post_id }}" style="margin-top:10px;">
                         @csrf
                         <input type="hidden" name="post_id" value="{{ $post->post_id }}">
                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                         <div class="form-group">
-                            <textarea id="chatMessage" class="form-control" rows="3" name="comment_name" placeholder="Type your message here..." style="border-radius:10px;"></textarea>
+                            <textarea class="form-control" rows="3" name="comment_name" placeholder="Type your comment here..." style="border-radius:10px;"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary" style="border-radius:10px; background:purple; border:none;">
                             <i class="fas fa-paper-plane"></i> Send
                         </button>
                     </form>
-                </div> --}}
+                </div>
+            @endforeach --}}
+
+
 
             </div>
         </div>
@@ -923,6 +953,17 @@
 
 
 
+
+    <!-- Success Message -->
+    <div id="successMessage" style="display: none;">
+        <div class="success-icon">
+            <!-- Checkmark icon or image -->
+            <img src="{{ asset('assets/img/checkmark.png') }}" alt="Success" width="50px">
+        </div>
+        <p>Thank you! Your payment has been successfully processed.</p>
+    </div>
+
+
 </div>
 
             <div class="modal-footer">
@@ -1189,21 +1230,21 @@ $.ajaxSetup({
 
 
 $(document).ready(function() {
-    // Toggle the comment section on "Comment" button click
+
     $('.commentbtn').click(function() {
         let postId = $(this).data('id');
-        $(`#comments-${postId}`).toggle(); // Toggle the visibility of the comments section
+        $(`#comments-${postId}`).toggle();
     });
 
-    // Attach submit event to the form
+
     $('.comment-form').submit(function(e) {
-        e.preventDefault(); // Prevent the default form submission
+        e.preventDefault();
 
         let form = $(this);
         let postid = form.find('input[name="post_id"]').val();
 
         $.ajax({
-            url: "{{ route('add-comment') }}", // Ensure this is the correct route
+            url: "{{ route('add-comment') }}",
             method: 'POST',
             data: form.serialize(),
             success: function(response) {
@@ -1257,8 +1298,9 @@ $(document).ready(function() {
 
 // comment
 
+// billing
 $(document).ready(function() {
-    // Set CSRF token header for all AJAX requests
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1398,22 +1440,31 @@ $(document).ready(function() {
     $('#loadingIndicator').show();
 
     $.ajax({
-        url: "{{ route('finalize.billing') }}",
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            console.log('Final form submitted successfully:', response);
-            $('#billingDetailsModal').modal('hide');
-            $('#loadingIndicator').hide();
-        },
-        error: function(xhr, status, error) {
-            console.error('Error submitting final form:', error);
-            alert('There was an error submitting your form. Please try again.');
-            $('#loadingIndicator').hide();
-        }
-    });
+            url: "{{ route('finalize.billing') }}",
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log('Final form submitted successfully:', response);
+                $('#thirdForm').fadeOut('slow', function() {
+                    $('#successMessage').fadeIn('slow');
+                });
+                $('#loadingIndicator').hide();
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error submitting final form:', error);
+                alert('There was an error submitting your form. Please try again.');
+                $('#loadingIndicator').hide();
+            }
+        });
+
+
+
+
+
+
 }
 
 

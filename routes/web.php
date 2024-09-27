@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
-
+use App\Models\CardDetails;
 use Illuminate\Support\Facades\Route;
 
 
@@ -267,12 +266,19 @@ Route::post('/share', [HomeController::class, 'sharePost']);
 
 
 // billing Controller
-Route::get('/dashboard/admin/billing/', [BillingController::class, 'index']);
+Route::get('/dashboard/artist/billing/', [BillingController::class, 'index']);
 
+// payment_method
 
+Route::get('/dashboard/artist/payment_method/', [PaymentMethodController::class, 'index']);
+// Artpost
+Route::get('/dashboard/artist/post/', [ArtPostController::class, 'index']);
 
+// ArtGallery
+Route::get('/dashboard/artist/gallery/', [ArtGalleryController::class, 'index']);
 
-
+// card_details
+Route::get('/dashboard/artist/card_details/', [CardDetailsController::class, 'index']);
 
 
 // routes/web.php
@@ -281,4 +287,10 @@ Route::post('/first-form-submit', [HomeController::class, 'submitFirstForm'])->n
 Route::post('/save-billing', [HomeController::class, 'saveSecondForm'])->name('save.billing');
 
 Route::post('/finalize-billing', [HomeController::class, 'finalizeBilling'])->name('finalize.billing');
+
+
+Route::get('/Home/settings', [SettingsController::class, 'index']);
+
+
+
 

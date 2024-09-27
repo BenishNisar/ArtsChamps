@@ -14,7 +14,7 @@ class BillingController extends Controller
 
         $billing = DB::select('select * from billing');
 
-        return view('dashboard.admin.billing.index',compact('billing'));
+        return view('dashboard.artist.billing.index',compact('billing'));
 
     }
 
