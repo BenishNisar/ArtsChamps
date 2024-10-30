@@ -148,7 +148,7 @@
                             <img src="{{ asset('assets/img/phone.png') }}" alt="Call" class="header-icon ml-auto">
 
                             <img src="{{ asset('assets/img/videocam.png') }}" alt="Video Call" class="header-icon">
-                            <img src="{{ asset('assets/img/info.png') }}" alt="Info" class="header-icon">
+                        
                         </div>
                     </div>
                 </div>

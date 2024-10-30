@@ -161,6 +161,8 @@
         .section.active {
             display: block; /* Show the active section */
         }
+
+
     </style>
 </head>
 <body>
@@ -433,19 +435,15 @@
                                                             </div>
                                                         </div>
                                                         <div class="mt-3">
-                                                            <p> {{ $post->content }}</p>
+                                                            <p>{{ $post->content }}</p>
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center mt-3">
-                                                            <div class="d-flex">
-                                                                {{-- <a href="javascript:void(0)" id="likebtn" data-id="{{ $post->post_id }}" data-lstatus="{{ $post->lstatus }}" class="post-card-buttons">
-                                                                    <i class='bx bxs-like mr-2 @if ($post->lstatus == 1) text-dark fw-bold @else text-primary @endif'></i> Like
-                                                                </a> --}}
-                                                                <a href="javascript:void(0)" id="commentbtn" data-id="{{ $post->post_id }}" class="post-card-buttons ml-3">
+                                                            <div class="d-flex gap-3">
+                                                                <a style="text-decoration: none" href="javascript:void(0)" id="commentbtn" data-id="{{ $post->post_id }}" class="post-card-buttons">
                                                                     <i class='bx bx-message-rounded mr-2'></i> Comment
                                                                 </a>
-
-                                                                <div class="dropdown dropup share-dropup ml-3">
-                                                                    <a href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <div class="dropdown dropup share-dropup">
+                                                                    <a style="text-decoration: none" href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                         <i class='bx bx-share-alt mr-2'></i> Share
                                                                     </a>
                                                                     <div class="dropdown-menu post-dropdown-menu">
@@ -481,9 +479,8 @@
                                                                         </a>
                                                                     </div>
                                                                 </div>
-
-                                                                <div class="dropdown dropup billing-dropup ml-3">
-                                                                    <a href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <div class="dropdown dropup billing-dropup">
+                                                                    <a style="text-decoration: none" href="#" class="post-card-buttons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                         <i class='bx bx-money mr-2'></i> Billing
                                                                     </a>
                                                                     <div class="dropdown-menu post-dropdown-menu">
@@ -511,7 +508,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                         <div class="border-top pt-3 hide-comments" id="commentsesction" style="display: none;">
                                                             <div class="row bootstrap snippets">
                                                                 <div class="col-md-12">
@@ -564,6 +560,7 @@
                 </section>
             </div>
         </section>
+
 
 
 

@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\CardDetails;
 use Illuminate\Support\Facades\Route;
 
 
@@ -212,6 +210,11 @@ Route::post('/dashboard/admin/friend/update/{id}', [FriendController::class, 'up
 Route::get('/dashboard/admin/friend/delete/{id}', [FriendController::class, 'delete']);
 
 
+// comment
+
+Route::get('/dashboard/admin/comment/', [CommentController::class, 'index']);
+
+
 // like comment share routes
 Route::post('/like-post/{id}', [HomeController::class, 'likePost'])->name('like_post');
 Route::get('/all-comments/{id}', [HomeController::class, 'allcomments'])->name('allcomments');
@@ -295,7 +298,3 @@ Route::post('/finalize-billing', [HomeController::class, 'finalizeBilling'])->na
 
 
 Route::get('/Home/settings', [SettingsController::class, 'index']);
-
-
-
-

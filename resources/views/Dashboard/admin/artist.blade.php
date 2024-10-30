@@ -5,7 +5,7 @@
             <div class="col-md-4">
                 <div class="card dash_card"
                     style="width: 15rem; height: 300px; border: double black; box-shadow: 10px 10px 10px gray;">
-                    <a href="{{ asset('dashboard/admin/post') }}" style="text-decoration: none;">
+                    <a href="{{ asset('dashboard/artist/post') }}" style="text-decoration: none;">
                         <div class="card-body">
                             <h1 class="card-title text-light" style="margin-top:-40px; background-color: purple;">
                                 <b style="color: white; margin-left: 20px;"><u>Posts</u></b>
@@ -22,7 +22,7 @@
             <div class="col-md-4">
                 <div class="card dash_card_two"
                     style="width: 15rem; height: 300px; border: double black; box-shadow: 10px 10px 10px gray;">
-                    <a href="{{ asset('dashboard/admin/gallery'
+                    <a href="{{ asset('dashboard/artist/gallery'
                     ) }}" style="text-decoration: none;">
                         <div class="card-body">
                             <h1 class="card-title text-light" style="margin-top:-40px; background-color: purple;">
@@ -40,7 +40,7 @@
             <div class="col-md-4">
                 <div class="card dash_card_three"
                     style="width: 15rem; height: 300px; border: double black; box-shadow: 10px 10px 10px gray;">
-                    <a href="{{ asset('dashboard/admin/billing') }}" style="text-decoration: none;">
+                    <a href="{{ asset('dashboard/artist/billing') }}" style="text-decoration: none;">
                         <div class="card-body">
                             <h1 class="card-title text-light" style="margin-top:-40px; background-color: purple;">
                                 <b style="color: white; margin-left: 20px;"><u>Billing</u></b>
